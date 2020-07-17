@@ -1,0 +1,37 @@
+[
+  {
+    "ItemName": "Purple Hat",
+    "ItemPrice": 15.1,
+    "ItemAmount": 6.0
+  },
+  {
+    "ItemName": "Red Hat",
+    "ItemPrice": 14.25,
+    "ItemAmount": 1.0
+  },
+  {
+    "ItemName": "Cow Skin glowes big",
+    "ItemPrice": 15.25,
+    "ItemAmount": 1.0
+  },
+  {
+    "ItemName": "Deer Skin glowes small",
+    "ItemPrice": 54.25,
+    "ItemAmount": 1.0
+  },
+  {
+    "ItemName": "Breloque",
+    "ItemPrice": 1.0,
+    "ItemAmount": 2.0
+  },
+  {
+    "ItemName": "Purple Hat",
+    "ItemPrice": 14.25,
+    "ItemAmount": 10.0
+  },
+  {
+    "ItemName": "Purple Hat",
+    "ItemPrice": 1.25,
+    "ItemAmount": 2.0
+  }
+]
