@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cashier.View"
         mc:Ignorable="d"
-        Title="Window1" Height="300" Width="600"
+        Title="New Type" Height="300" Width="600"
+        MinHeight="300" MinWidth="600"
+        MaxHeight="300" MaxWidth="600"
         ResizeMode="NoResize"
         Closing="DataWindow_Closing">
     <Grid>
@@ -15,7 +17,7 @@
         </Grid.RowDefinitions>
         <!--<TextBox Grid.Row="0" Text="{Binding typesListVM, UpdateSourceTrigger=PropertyChanged}"/>--> 
         <!--<DataGrid Grid.Row="0" AutoGenerateColumns="False" ItemsSource="{Binding typesListVM}">
-            <DataGridTextColumn Header="Type" Binding="{Binding}"/>
+            <DataGridTextColumn yHeader="Type" Binding="{Binding}"/>
             --><!--="{Binding typesOC}"--><!--
         </DataGrid>-->
 

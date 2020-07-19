@@ -12,6 +12,15 @@
       },
       {
         "Type": "Wooden Toy"
+      },
+      {
+        "Type": "Souvenier"
+      },
+      {
+        "Type": "Gloves"
+      },
+      {
+        "Type": "Belt"
       }
     ],
     "ItemType": "Wool Hat",
@@ -33,6 +42,15 @@
       },
       {
         "Type": "Wooden Toy"
+      },
+      {
+        "Type": "Souvenier"
+      },
+      {
+        "Type": "Gloves"
+      },
+      {
+        "Type": "Belt"
       }
     ],
     "ItemType": "Skin Hat",
@@ -54,6 +72,15 @@
       },
       {
         "Type": "Wooden Toy"
+      },
+      {
+        "Type": "Souvenier"
+      },
+      {
+        "Type": "Gloves"
+      },
+      {
+        "Type": "Belt"
       }
     ],
     "ItemType": "Wool Hat",
@@ -75,12 +102,21 @@
       },
       {
         "Type": "Wooden Toy"
+      },
+      {
+        "Type": "Souvenier"
+      },
+      {
+        "Type": "Gloves"
+      },
+      {
+        "Type": "Belt"
       }
     ],
     "ItemType": "Wooden Toy",
     "ItemName": "Sword",
     "ItemPrice": 12.0,
-    "ItemAmount": 1.0,
+    "ItemAmount": 18.0,
     "ItemCode": 15
   },
   {
@@ -96,6 +132,15 @@
       },
       {
         "Type": "Wooden Toy"
+      },
+      {
+        "Type": "Souvenier"
+      },
+      {
+        "Type": "Gloves"
+      },
+      {
+        "Type": "Belt"
       }
     ],
     "ItemType": "Scarf",
@@ -103,5 +148,65 @@
     "ItemPrice": 18.0,
     "ItemAmount": 1.0,
     "ItemCode": 16
+  },
+  {
+    "typesList": [
+      {
+        "Type": "Wool Hat"
+      },
+      {
+        "Type": "Skin Hat"
+      },
+      {
+        "Type": "Scarf"
+      },
+      {
+        "Type": "Wooden Toy"
+      },
+      {
+        "Type": "Souvenier"
+      },
+      {
+        "Type": "Gloves"
+      },
+      {
+        "Type": "Belt"
+      }
+    ],
+    "ItemType": "Souvenier",
+    "ItemName": "Tallinn",
+    "ItemPrice": 0.2,
+    "ItemAmount": 1.0,
+    "ItemCode": 17
+  },
+  {
+    "typesList": [
+      {
+        "Type": "Wool Hat"
+      },
+      {
+        "Type": "Skin Hat"
+      },
+      {
+        "Type": "Scarf"
+      },
+      {
+        "Type": "Wooden Toy"
+      },
+      {
+        "Type": "Souvenier"
+      },
+      {
+        "Type": "Gloves"
+      },
+      {
+        "Type": "Belt"
+      }
+    ],
+    "ItemType": "Belt",
+    "ItemName": "Black leather belt",
+    "ItemPrice": 15.0,
+    "ItemAmount": 5.0,
+    "ItemCode": 18
   }
 ]

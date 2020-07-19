@@ -26,7 +26,8 @@ namespace Cashier
 
         private void Done_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.UpdateTable();
+            //_viewModel.UpdateTable();
+            _viewModel.OperationDone();
         }
 
         private void dataGrid1_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
@@ -34,6 +35,7 @@ namespace Cashier
             if (e.EditAction == DataGridEditAction.Commit)
             {
                 _viewModel.GrantNewID();
+                _viewModel.CaltulateSum();
                 //MessageBox.Show("Changes Saved!");
             }
         }
@@ -148,8 +150,24 @@ namespace Cashier
 
         private void WarehouseGrid_AddingNewItem(object sender, AddingNewItemEventArgs e)
         {
-            MessageBox.Show("New Item");
+            //MessageBox.Show("New Item");
             _viewModel.GrantNewID();
+        }
+
+        private void ScanTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key != System.Windows.Input.Key.Enter) return;
+            e.Handled = true;
+            //MessageBox.Show("Enter Pressed!");
+            _viewModel.AddNewOperationItem();
+            _viewModel.CaltulateSum();
+        }
+
+        private void ClearAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.OperationClear();
+            _viewModel.CaltulateSum();
+            MessageBox.Show("Current list has been cleared!");
         }
     }
 }

@@ -34,11 +34,12 @@
             </StackPanel>
 
             <StackPanel x:Name="OperationStackPanel" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Width="150" Background="Gray" VerticalAlignment="Bottom" Grid.RowSpan="2">
+                <TextBlock Text="{Binding operationSum, UpdateSourceTrigger=PropertyChanged}" Foreground="White" HorizontalAlignment="Center" FontSize="20"/>
                 <Button x:Name="PrintRecipeButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" BorderThickness="0" Height="40">
                         <TextBlock Foreground="White" FontSize="20"
                                HorizontalAlignment="Center" VerticalAlignment="Center">Print</TextBlock>
                     </Button>
-                <Button x:Name="ClearAllButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom"  BorderThickness="0" Height="40">
+                <Button x:Name="ClearAllButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom"  BorderThickness="0" Height="40" Click="ClearAllButton_Click">
                     <TextBlock Foreground="White" FontSize="20"
                                HorizontalAlignment="Center" VerticalAlignment="Center">Clear</TextBlock>
                 </Button>
@@ -65,23 +66,23 @@
             <DataGrid Grid.Column="1" Grid.Row="0" x:Name="operationGrid" 
                       AutoGenerateColumns="False" ItemsSource="{Binding operationCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RowEditEnding="dataGrid1_RowEditEnding" Visibility="Visible">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Code" Binding="{Binding ItemCode}" Width="Auto"/>
-                    <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*"/>
-                    <DataGridTextColumn Header="Quantity" Binding="{Binding ItemAmount}" Width="Auto"/>
-                    <DataGridTextColumn Header="Price (€)" Binding="{Binding ItemPrice}" Width="Auto"/>
-                    <DataGridTextColumn Header="Discount (%)" Binding="{Binding ItemDiscount}" Width="Auto"/>
-                    <DataGridTextColumn Header="Total" Binding="{Binding ItemTotalPrice}" Width="Auto"/>
+                    <DataGridTextColumn Header="Code" Binding="{Binding ItemCode}" Width="Auto" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Quantity" Binding="{Binding ItemAmount}" Width="Auto" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Price (€)" Binding="{Binding ItemPrice}" Width="Auto" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Discount (%)" Binding="{Binding ItemDiscount, UpdateSourceTrigger=PropertyChanged}" Width="Auto"/>
+                    <DataGridTextColumn Header="Total" Binding="{Binding ItemTotalPrice, UpdateSourceTrigger=PropertyChanged}" Width="Auto" IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
 
             <DataGrid Grid.Column="1" Grid.Row="0"  x:Name="historyGrid" Grid.RowSpan="2"
                       AutoGenerateColumns="False" ItemsSource="{Binding historyCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RowEditEnding="dataGrid1_RowEditEnding"  Visibility="Hidden" >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Datetime" Binding="{Binding ItemPrice}" Width="Auto"/>
-                    <DataGridTextColumn Header="Code" Binding="{Binding ItemCode}" Width="Auto"/>
-                    <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*"/>
-                    <DataGridTextColumn Header="Quantity" Binding="{Binding ItemAmount}" Width="Auto"/>
-                    <DataGridTextColumn Header="Price" Binding="{Binding ItemPrice}" Width="Auto"/>
+                    <DataGridTextColumn Header="Datetime" Binding="{Binding ItemPrice}" Width="Auto" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Code" Binding="{Binding ItemCode}" Width="Auto" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Quantity" Binding="{Binding ItemAmount}" Width="Auto" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Price" Binding="{Binding ItemPrice}" Width="Auto" IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -118,7 +119,9 @@
                     <ColumnDefinition Width="130"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox x:Name="scanTextBox" Grid.Column="0" Grid.Row="1" TextAlignment="Center" TextWrapping="NoWrap" FontSize="20" Visibility="Visible"/>
+                <TextBox x:Name="scanTextBox" Grid.Column="0" Grid.Row="1" 
+                         TextAlignment="Center" TextWrapping="NoWrap" FontSize="20" 
+                         Visibility="Visible" KeyUp="ScanTextBox_KeyUp" Text="{Binding OperationItemCode, UpdateSourceTrigger=PropertyChanged}"/>
 
 
 

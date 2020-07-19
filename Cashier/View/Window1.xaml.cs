@@ -33,13 +33,14 @@ namespace Cashier.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.GetTypes();
+            //_viewModel.GetTypes();
             //_viewModel.AddNewType();
             //this.Close();
+            _viewModel.SaveTypes();
         }
         void DataWindow_Closing(object sender, CancelEventArgs e)
         {
-            //MessageBox.Show("Closing called");
+            //MessageBox.Show("Closing called");z
 
             // If data is dirty, notify user and ask for a response
             if (true)

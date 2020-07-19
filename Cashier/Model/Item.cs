@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Cashier.Model
 {
@@ -88,70 +89,10 @@ namespace Cashier.Model
         }
     }
 
-     class Hat : Item
-    {
-        private string _Material;
-        private string _Size;
-        public string Material
-        {
-            
-            get
-            {
-                return _Material;
-            }
-            set
-            {
-                _Material = value;
-                OnPropertyChanged("Material");
-            }
-        }
-        public string Size
-        {
-            get
-            {
-                return _Size;
-            }
-            set
-            {
-                _Size = value;
-                OnPropertyChanged("Size");
-            }
-        }
-    }
-
-    class Gloves : Item
-    {
-        private string _Material;
-        private string _Size;
-        public string Material
-        {
-            get
-            {
-                return _Material;
-            }
-            set
-            {
-                _Material = value;
-                OnPropertyChanged("Material");
-            }
-        }
-        public string Size
-        {
-            get
-            {
-                return _Size;
-            }
-            set
-            {
-                _Size = value;
-                OnPropertyChanged("Size");
-            }
-        }
-    }
 
     class OperationItem : Item
     {
-        private double _ItemDiscount;
+        private double _ItemDiscount = 0;
         public double ItemDiscount
         {
             get
@@ -160,18 +101,26 @@ namespace Cashier.Model
             }
             set
             {
-                _ItemDiscount = value;
+                if (value > 15)
+                {
+                    MessageBox.Show("Discount can't be more than 15%!");
+                    _ItemDiscount = 15;
+                }
+                else _ItemDiscount = value;
                 OnPropertyChanged("ItemDiscount");
+                double i = ItemTotalPrice;
+                OnPropertyChanged("ItemTotalPrice");
+                OnPropertyChanged("operationSum");
             }
         }
 
-        private double _ItemTotalPrice;
+        private double _ItemTotalPrice = 0;
 
         public double ItemTotalPrice
         {
             get
             {
-                double _ItemTotalPrice = ItemPrice * ItemAmount;
+                _ItemTotalPrice = ItemPrice * ItemAmount;
                 if (_ItemDiscount != null)
                 {
                     _ItemTotalPrice = _ItemTotalPrice - ((_ItemTotalPrice / 100) * _ItemDiscount);
@@ -179,26 +128,20 @@ namespace Cashier.Model
                 return _ItemTotalPrice;
             }
         }
+
+        public void UpdateTotalPrice()
+        {
+            _ItemTotalPrice = ItemPrice * ItemAmount;
+            if (_ItemDiscount != null)
+            {
+                _ItemTotalPrice = _ItemTotalPrice - ((_ItemTotalPrice / 100) * _ItemDiscount);
+            }
+            OnPropertyChanged("ItemTotalPrice");
+        }
     }
 
     class WarehouseItem : Item
-    {
-        //Types _Types12 = new Types();
-        //public Types Types12
-        //{
-        //    get
-        //    {
-        //        return _Types12;
-        //    }
-        //    set
-        //    {
-        //        _Types12 = value;
-        //        _ItemType = value.Type;
-        //    }
-        //}
-
-        
-
+    {   
         private string _ItemType;
 
         DataManager dataManager = new DataManager();
@@ -238,6 +181,49 @@ namespace Cashier.Model
             {
                 _ItemType = value;
                 OnPropertyChanged("ItemType");
+            }
+        }
+
+        public OperationItem ToOperationItem(WarehouseItem warehouseItem)
+        {
+            OperationItem operationItem = new OperationItem();
+            operationItem.ItemCode = warehouseItem.ItemCode;
+            operationItem.ItemName = warehouseItem.ItemName;
+            operationItem.ItemPrice = warehouseItem.ItemPrice;
+            operationItem.ItemAmount = 1;
+            operationItem.ItemDiscount = 0;
+
+            return operationItem;
+        }
+    }
+    
+    class HistoryItem : Item
+    {
+        private ObservableCollection<OperationItem> _operationHistory;
+        public ObservableCollection<OperationItem> operationHistory
+        {
+            get
+            {
+                return _operationHistory;
+            }
+            set
+            {
+                _operationHistory = value;
+                OnPropertyChanged("operationHistory");
+            }
+        }
+
+        private DateTime _dateTime;
+
+        public DateTime dateTime
+        {
+            get
+            {
+                return _dateTime;
+            }
+            set
+            {
+                _dateTime = DateTime.Now;
             }
         }
     }
