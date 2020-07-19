@@ -12,19 +12,79 @@ namespace Cashier.Model
 {
     class DataManager
     {
-
-        public ObservableCollection<Item> GetItems()
+        public ObservableCollection<WarehouseItem> GetWarehouseItems()
         {
-            ObservableCollection<Item> itemsList = JsonConvert.DeserializeObject<ObservableCollection<Item>>(File.ReadAllText(@"C:\Users\Administrator\source\repos\Cashier\items.json"));
-            return itemsList;
+            try
+            {
+                ObservableCollection<WarehouseItem> itemsList = JsonConvert.DeserializeObject<ObservableCollection<WarehouseItem>>(File.ReadAllText(@"C:\Users\Administrator\source\repos\CashierGitHub\items.json"));
+                return itemsList;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Warehouse items file not exists");
+                File.WriteAllText(@"C:\Users\Administrator\source\repos\CashierGitHub\types.json", "Empty file creation");
+                return new ObservableCollection<WarehouseItem>();
+            }
+            return new ObservableCollection<WarehouseItem>();
+            
         }
 
-        public void JsonSerialize(ObservableCollection<Item> itemsList)
+        public void SaveWarehouse(ObservableCollection<WarehouseItem> itemsList)
         {
             string json = JsonConvert.SerializeObject(itemsList, Formatting.Indented);
            // MessageBox.Show("Collection serialized" + "\n" + json);a
 
-            File.WriteAllText(@"C:\Users\Administrator\source\repos\Cashier\items.json", JsonConvert.SerializeObject(itemsList, Formatting.Indented));
+            File.WriteAllText(@"C:\Users\Administrator\source\repos\CashierGitHub\items.json", JsonConvert.SerializeObject(itemsList, Formatting.Indented));
+        }
+
+        public ObservableCollection<Types> GetItemTypes()
+        {
+            try
+            {
+                ObservableCollection<Types> types = JsonConvert.DeserializeObject<ObservableCollection<Types>>(File.ReadAllText(@"C:\Users\Administrator\source\repos\CashierGitHub\types.json"));
+                return types;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Items types file not exists");
+                File.WriteAllText(@"C:\Users\Administrator\source\repos\CashierGitHub\types.json", "Empty file creation");
+                return new ObservableCollection<Types>();
+            }
+            return new ObservableCollection<Types>();
+            
+        }
+
+        public void SaveItemTypes(ObservableCollection<Types> itemsTypesList)
+        {
+            string json = JsonConvert.SerializeObject(itemsTypesList, Formatting.Indented);
+            // MessageBox.Show("Collection serialized" + "\n" + json);a
+
+            File.WriteAllText(@"C:\Users\Administrator\source\repos\CashierGitHub\types.json", JsonConvert.SerializeObject(itemsTypesList, Formatting.Indented));
+        }
+
+        public List<int> GetListID()
+        {
+            try
+            {
+                List<int> types = JsonConvert.DeserializeObject<List<int>>(File.ReadAllText(@"C:\Users\Administrator\source\repos\CashierGitHub\itemIDs.json"));
+                return types;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Item IDs file not exists");
+                File.WriteAllText(@"C:\Users\Administrator\source\repos\CashierGitHub\itemIDs.json", @"[0]");
+                return new List<int>(0);
+            }
+            return new List<int>();
+
+        }
+
+        public void SaveListID(List<int> itemsTypesList)
+        {
+            string json = JsonConvert.SerializeObject(itemsTypesList, Formatting.Indented);
+            //MessageBox.Show("Collection serialized" + "\n" + json);a
+
+            File.WriteAllText(@"C:\Users\Administrator\source\repos\CashierGitHub\itemIDs.json", JsonConvert.SerializeObject(itemsTypesList, Formatting.Indented));
         }
     }
 }

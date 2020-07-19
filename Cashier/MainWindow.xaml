@@ -8,8 +8,9 @@
         Title="MainWindow" Height="450" Width="800"
         Closing="DataWindow_Closing"
         ResizeMode="CanResize"
-        MinHeight="150"
-        MinWidth="400">
+        MinHeight="170"
+        MinWidth="400"
+        Background="Gray">
 
 
     <Grid>
@@ -23,28 +24,91 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
-                
-            <ListBox Grid.Column="0" Grid.Row="0">
-                <RadioButton Width="130" Height="20" x:Name="Operation" Background="Gray" HorizontalAlignment="Center" IsChecked="True">
-                    
-                    <TextBlock Foreground="Black">Operation</TextBlock>
-                </RadioButton>
-                <RadioButton Width="130" Height="20" x:Name="Warehouse" Background="Gray" HorizontalAlignment="Center">
-                    <TextBlock Foreground="Black">Warehouse</TextBlock>
-                </RadioButton>
-                <RadioButton Width="130" Height="20" x:Name="History" Background="Gray" HorizontalAlignment="Center">
-                    <TextBlock Foreground="Black">History</TextBlock>
-                </RadioButton>
-            </ListBox>
 
-            <DataGrid Grid.Column="1" Grid.Row="0" x:Name="dataGrid" 
-                      AutoGenerateColumns="False" ItemsSource="{Binding itemsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <StackPanel Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Width="150" Background="Gray">
+                <ListBox Width="150" Height="Auto" BorderThickness="0" Background="Gray">
+                    <TextBlock HorizontalAlignment="Center" Foreground="Snow" FontSize="20" PreviewMouseDown="TextBlock_PreviewMouseDown" Width="138">Operation</TextBlock>
+                    <TextBlock HorizontalAlignment="Center" Foreground="Snow" FontSize="20" PreviewMouseDown="TextBlock_PreviewMouseDown_1" Width="138">History</TextBlock>
+                    <TextBlock HorizontalAlignment="Center" Foreground="Snow" FontSize="20" PreviewMouseDown="TextBlock_PreviewMouseDown_2" Width="138">Warehouse</TextBlock>
+                </ListBox>
+            </StackPanel>
+
+            <StackPanel x:Name="OperationStackPanel" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Width="150" Background="Gray" VerticalAlignment="Bottom" Grid.RowSpan="2">
+                <Button x:Name="PrintRecipeButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" BorderThickness="0" Height="40">
+                        <TextBlock Foreground="White" FontSize="20"
+                               HorizontalAlignment="Center" VerticalAlignment="Center">Print</TextBlock>
+                    </Button>
+                <Button x:Name="ClearAllButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom"  BorderThickness="0" Height="40">
+                    <TextBlock Foreground="White" FontSize="20"
+                               HorizontalAlignment="Center" VerticalAlignment="Center">Clear</TextBlock>
+                </Button>
+            </StackPanel>
+
+            <StackPanel x:Name="HistoryStackPanel" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Width="150" Background="Gray" VerticalAlignment="Bottom" Visibility="Hidden"  Grid.RowSpan="2">
+                <Button x:Name="PrintHistoryButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" BorderThickness="0" Height="40">
+                    <TextBlock Foreground="White" FontSize="20"
+                               HorizontalAlignment="Center" VerticalAlignment="Center">Print</TextBlock>
+                </Button>
+            </StackPanel>
+
+            <StackPanel x:Name="WarehouseStackPanel" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Width="150" Background="Gray" VerticalAlignment="Bottom" Visibility="Hidden" Grid.RowSpan="2">
+                <Button x:Name="PrintLabelButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" BorderThickness="0" Height="40">
+                    <TextBlock Foreground="White" FontSize="20"
+                               HorizontalAlignment="Center" VerticalAlignment="Center">Print</TextBlock>
+                </Button>
+                <Button x:Name="SaveButton" Background="Gray" Grid.Column="0" Grid.Row="1" Click="SaveButton_Click" Visibility="Hidden" BorderThickness="0" Height="40">
+                    <TextBlock Foreground="White" FontSize="20"
+                               HorizontalAlignment="Center" VerticalAlignment="Center">Save</TextBlock>
+                </Button>
+            </StackPanel>
+
+            <DataGrid Grid.Column="1" Grid.Row="0" x:Name="operationGrid" 
+                      AutoGenerateColumns="False" ItemsSource="{Binding operationCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RowEditEnding="dataGrid1_RowEditEnding" Visibility="Visible">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Path=ItemName, UpdateSourceTrigger=PropertyChanged}" Width="*"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Price" Binding="{Binding Path=ItemPrice, UpdateSourceTrigger=PropertyChanged}" Width="*"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Amount" Binding="{Binding Path=ItemAmount, UpdateSourceTrigger=PropertyChanged}" Width="*"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Size" Binding="{Binding Path=Size, UpdateSourceTrigger=PropertyChanged}" Width="*"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Material" Binding="{Binding Path=Material, UpdateSourceTrigger=PropertyChanged}" Width="*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Code" Binding="{Binding ItemCode}" Width="Auto"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*"/>
+                    <DataGridTextColumn Header="Quantity" Binding="{Binding ItemAmount}" Width="Auto"/>
+                    <DataGridTextColumn Header="Price (€)" Binding="{Binding ItemPrice}" Width="Auto"/>
+                    <DataGridTextColumn Header="Discount (%)" Binding="{Binding ItemDiscount}" Width="Auto"/>
+                    <DataGridTextColumn Header="Total" Binding="{Binding ItemTotalPrice}" Width="Auto"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <DataGrid Grid.Column="1" Grid.Row="0"  x:Name="historyGrid" Grid.RowSpan="2"
+                      AutoGenerateColumns="False" ItemsSource="{Binding historyCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RowEditEnding="dataGrid1_RowEditEnding"  Visibility="Hidden" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Datetime" Binding="{Binding ItemPrice}" Width="Auto"/>
+                    <DataGridTextColumn Header="Code" Binding="{Binding ItemCode}" Width="Auto"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*"/>
+                    <DataGridTextColumn Header="Quantity" Binding="{Binding ItemAmount}" Width="Auto"/>
+                    <DataGridTextColumn Header="Price" Binding="{Binding ItemPrice}" Width="Auto"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <DataGrid Grid.Column="1" Grid.Row="0" x:Name="warehouseGrid" Grid.RowSpan="2"
+                      AutoGenerateColumns="False" ItemsSource="{Binding warehouseCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RowEditEnding="dataGrid1_RowEditEnding" AddingNewItem="WarehouseGrid_AddingNewItem"  Visibility="Hidden" AlternatingRowBackground="LightGray">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Type">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <ComboBox ItemsSource="{Binding typesList}" DisplayMemberPath="Type" SelectedValuePath="Type" SelectedItem="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Button Click="Button_Click">
+                                        <TextBlock Text="Add New"/>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Code" Binding="{Binding ItemCode}" Width="Auto" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*"/>
+                    <DataGridTextColumn Header="Quantity" Binding="{Binding ItemAmount}" Width="Auto"/>
+                    <DataGridTextColumn Header="Price" Binding="{Binding ItemPrice}" Width="Auto"/>
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -53,14 +117,16 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="130"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Grid.Row="1"></TextBox>
-                <Button x:Name="DoneButton" Background="Gray" Grid.Column="1" Click="Done_Click">
-                    <TextBlock Foreground="White" FontSize="20" 
-                               HorizontalAlignment="Center" VerticalAlignment="Center">Done</TextBlock>
+
+                <TextBox x:Name="scanTextBox" Grid.Column="0" Grid.Row="1" TextAlignment="Center" TextWrapping="NoWrap" FontSize="20" Visibility="Visible"/>
+
+
+
+                <Button x:Name="DoneButton" Background="Gray" Grid.Column="1" Click="Done_Click" Visibility="Visible">
+                    <TextBlock Foreground="White" FontSize="20"
+                               HorizontalAlignment="Center" VerticalAlignment="Center">OK</TextBlock>
                 </Button>
             </Grid>
-            
-            
         </Grid>
     </Grid>
 </Window>

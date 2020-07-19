@@ -1,37 +1,146 @@
 [
   {
-    "ItemName": "Purple Hat",
-    "ItemPrice": 15.1,
-    "ItemAmount": 6.0
+    "typesList": [
+      {
+        "Type": "Wool Hat"
+      },
+      {
+        "Type": "Skin Hat"
+      },
+      {
+        "Type": "Scarf"
+      }
+    ],
+    "ItemType": "Wool Hat",
+    "ItemName": "Test1",
+    "ItemPrice": 2.0,
+    "ItemAmount": 1.0,
+    "ItemCode": 7
   },
   {
-    "ItemName": "Red Hat",
-    "ItemPrice": 14.25,
-    "ItemAmount": 1.0
+    "typesList": [
+      {
+        "Type": "Wool Hat"
+      },
+      {
+        "Type": "Skin Hat"
+      },
+      {
+        "Type": "Scarf"
+      }
+    ],
+    "ItemType": "Skin Hat",
+    "ItemName": "Test2",
+    "ItemPrice": 2.0,
+    "ItemAmount": 1.0,
+    "ItemCode": 1
   },
   {
-    "ItemName": "Cow Skin glowes big",
-    "ItemPrice": 15.25,
-    "ItemAmount": 1.0
+    "typesList": [
+      {
+        "Type": "Wool Hat"
+      },
+      {
+        "Type": "Skin Hat"
+      },
+      {
+        "Type": "Scarf"
+      }
+    ],
+    "ItemType": "Wool Hat",
+    "ItemName": "test3",
+    "ItemPrice": 24.0,
+    "ItemAmount": 10.0,
+    "ItemCode": 2
   },
   {
-    "ItemName": "Deer Skin glowes small",
-    "ItemPrice": 54.25,
-    "ItemAmount": 1.0
+    "typesList": [
+      {
+        "Type": "Wool Hat"
+      },
+      {
+        "Type": "Skin Hat"
+      },
+      {
+        "Type": "Scarf"
+      }
+    ],
+    "ItemType": "0",
+    "ItemName": "0",
+    "ItemPrice": 0.0,
+    "ItemAmount": 0.0,
+    "ItemCode": 3
   },
   {
-    "ItemName": "Breloque",
+    "typesList": [
+      {
+        "Type": "Wool Hat"
+      },
+      {
+        "Type": "Skin Hat"
+      },
+      {
+        "Type": "Scarf"
+      }
+    ],
+    "ItemType": "0",
+    "ItemName": null,
+    "ItemPrice": 0.0,
+    "ItemAmount": 0.0,
+    "ItemCode": 4
+  },
+  {
+    "typesList": [
+      {
+        "Type": "Wool Hat"
+      },
+      {
+        "Type": "Skin Hat"
+      },
+      {
+        "Type": "Scarf"
+      }
+    ],
+    "ItemType": "Wool Hat",
+    "ItemName": "test7",
     "ItemPrice": 1.0,
-    "ItemAmount": 2.0
+    "ItemAmount": 1.0,
+    "ItemCode": 8
   },
   {
-    "ItemName": "Purple Hat",
-    "ItemPrice": 14.25,
-    "ItemAmount": 10.0
+    "typesList": [
+      {
+        "Type": "Wool Hat"
+      },
+      {
+        "Type": "Skin Hat"
+      },
+      {
+        "Type": "Scarf"
+      }
+    ],
+    "ItemType": "Skin Hat",
+    "ItemName": "test9",
+    "ItemPrice": 15.0,
+    "ItemAmount": 1.0,
+    "ItemCode": 13
   },
   {
-    "ItemName": "Purple Hat",
-    "ItemPrice": 1.25,
-    "ItemAmount": 2.0
+    "typesList": [
+      {
+        "Type": "Wool Hat"
+      },
+      {
+        "Type": "Skin Hat"
+      },
+      {
+        "Type": "Scarf"
+      }
+    ],
+    "ItemType": "Wool Hat",
+    "ItemName": "Test10",
+    "ItemPrice": 17.0,
+    "ItemAmount": 1.0,
+    "ItemCode": 14
   }
 ]

@@ -1,6 +1,8 @@
 ﻿using Cashier.ModelView;
+using Cashier.View;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Cashier
 {
@@ -11,21 +13,35 @@ namespace Cashier
     {
         private readonly MyViewModel _viewModel;
 
+        private Window1 NewTypeWindow;
+
 
         public MainWindow()
         {
+            //OperationEnable();
             InitializeComponent();
             _viewModel = new MyViewModel();
-            DoneButton.Click += Done_Click;
-            // The DataContext serves as the starting point of Binding Paths
             DataContext = _viewModel;
         }
 
         private void Done_Click(object sender, RoutedEventArgs e)
         {
-           int i =_viewModel.itemsList.Count;
             _viewModel.UpdateTable();
         }
+
+        private void dataGrid1_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                _viewModel.GrantNewID();
+                //MessageBox.Show("Changes Saved!");
+            }
+        }
+
+        //private void dataGrid1_AddNewItem(object sender, AddingNewItemEventArgs e)
+        //{
+        //    MessageBox.Show("New Item added!");
+        //}
 
         void DataWindow_Closing(object sender, CancelEventArgs e)
         {
@@ -48,9 +64,92 @@ namespace Cashier
                 }
                 else if (result == MessageBoxResult.Yes)
                 {
-                    _viewModel.SaveJSON();
+                    _viewModel.SaveWarehouse();
                 }
             }
+        }
+
+        private void OperationEnable()
+        {
+            operationGrid.Visibility = Visibility.Visible;
+            scanTextBox.Visibility = Visibility.Visible;
+            DoneButton.Visibility = Visibility.Visible;
+            historyGrid.Visibility = Visibility.Hidden;
+            warehouseGrid.Visibility = Visibility.Hidden;
+            SaveButton.Visibility = Visibility.Hidden;
+
+            OperationStackPanel.Visibility = Visibility.Visible;
+            HistoryStackPanel.Visibility = Visibility.Hidden;
+            WarehouseStackPanel.Visibility = Visibility.Hidden;
+
+        }
+
+        private void HistoryEnable()
+        {
+            operationGrid.Visibility = Visibility.Hidden;
+            scanTextBox.Visibility = Visibility.Hidden;
+            DoneButton.Visibility = Visibility.Hidden;
+            historyGrid.Visibility = Visibility.Visible;
+            warehouseGrid.Visibility = Visibility.Hidden;
+            SaveButton.Visibility = Visibility.Hidden;
+
+            OperationStackPanel.Visibility = Visibility.Hidden;
+            HistoryStackPanel.Visibility = Visibility.Visible;
+            WarehouseStackPanel.Visibility = Visibility.Hidden;
+        }
+
+        private void WarehouseEnable()
+        {
+            operationGrid.Visibility = Visibility.Hidden;
+            scanTextBox.Visibility = Visibility.Hidden;
+            DoneButton.Visibility = Visibility.Hidden;
+            historyGrid.Visibility = Visibility.Hidden;
+            warehouseGrid.Visibility = Visibility.Visible;
+            SaveButton.Visibility = Visibility.Visible;
+
+            OperationStackPanel.Visibility = Visibility.Hidden;
+            HistoryStackPanel.Visibility = Visibility.Hidden;
+            WarehouseStackPanel.Visibility = Visibility.Visible;
+        }
+
+        private void TextBlock_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            OperationEnable();
+
+        }
+
+        private void TextBlock_PreviewMouseDown_1(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            HistoryEnable();
+        }
+
+        private void TextBlock_PreviewMouseDown_2(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            WarehouseEnable();
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.SaveWarehouse();
+            MessageBox.Show("Changes Saved!");
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            NewTypeWindow = new Window1();
+            //NewTypeWindow.Activate();
+            NewTypeWindow.Show();
+        }
+
+        private void TextBlock_PreviewMouseDown_3(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            // not used
+        }
+
+        private void WarehouseGrid_AddingNewItem(object sender, AddingNewItemEventArgs e)
+        {
+            MessageBox.Show("New Item");
+            _viewModel.GrantNewID();
         }
     }
 }
