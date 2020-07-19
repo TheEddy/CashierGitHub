@@ -9,10 +9,13 @@
       },
       {
         "Type": "Scarf"
+      },
+      {
+        "Type": "Wooden Toy"
       }
     ],
     "ItemType": "Wool Hat",
-    "ItemName": "Test1",
+    "ItemName": "Sheep Hat",
     "ItemPrice": 2.0,
     "ItemAmount": 1.0,
     "ItemCode": 7
@@ -27,10 +30,13 @@
       },
       {
         "Type": "Scarf"
+      },
+      {
+        "Type": "Wooden Toy"
       }
     ],
     "ItemType": "Skin Hat",
-    "ItemName": "Test2",
+    "ItemName": "Cow Hat",
     "ItemPrice": 2.0,
     "ItemAmount": 1.0,
     "ItemCode": 1
@@ -45,10 +51,13 @@
       },
       {
         "Type": "Scarf"
+      },
+      {
+        "Type": "Wooden Toy"
       }
     ],
     "ItemType": "Wool Hat",
-    "ItemName": "test3",
+    "ItemName": "Black Sheep Hat",
     "ItemPrice": 24.0,
     "ItemAmount": 10.0,
     "ItemCode": 2
@@ -63,49 +72,16 @@
       },
       {
         "Type": "Scarf"
+      },
+      {
+        "Type": "Wooden Toy"
       }
     ],
-    "ItemType": "0",
-    "ItemName": "0",
-    "ItemPrice": 0.0,
-    "ItemAmount": 0.0,
-    "ItemCode": 3
-  },
-  {
-    "typesList": [
-      {
-        "Type": "Wool Hat"
-      },
-      {
-        "Type": "Skin Hat"
-      },
-      {
-        "Type": "Scarf"
-      }
-    ],
-    "ItemType": "0",
-    "ItemName": null,
-    "ItemPrice": 0.0,
-    "ItemAmount": 0.0,
-    "ItemCode": 4
-  },
-  {
-    "typesList": [
-      {
-        "Type": "Wool Hat"
-      },
-      {
-        "Type": "Skin Hat"
-      },
-      {
-        "Type": "Scarf"
-      }
-    ],
-    "ItemType": "Wool Hat",
-    "ItemName": "test7",
-    "ItemPrice": 1.0,
+    "ItemType": "Wooden Toy",
+    "ItemName": "Sword",
+    "ItemPrice": 12.0,
     "ItemAmount": 1.0,
-    "ItemCode": 8
+    "ItemCode": 15
   },
   {
     "typesList": [
@@ -117,30 +93,15 @@
       },
       {
         "Type": "Scarf"
-      }
-    ],
-    "ItemType": "Skin Hat",
-    "ItemName": "test9",
-    "ItemPrice": 15.0,
-    "ItemAmount": 1.0,
-    "ItemCode": 13
-  },
-  {
-    "typesList": [
-      {
-        "Type": "Wool Hat"
       },
       {
-        "Type": "Skin Hat"
-      },
-      {
-        "Type": "Scarf"
+        "Type": "Wooden Toy"
       }
     ],
-    "ItemType": "Wool Hat",
-    "ItemName": "Test10",
-    "ItemPrice": 17.0,
+    "ItemType": "Scarf",
+    "ItemName": "Pink Scarf",
+    "ItemPrice": 18.0,
     "ItemAmount": 1.0,
-    "ItemCode": 14
+    "ItemCode": 16
   }
 ]
