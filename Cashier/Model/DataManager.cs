@@ -22,7 +22,7 @@ namespace Cashier.Model
             catch (Exception e)
             {
                 MessageBox.Show("Warehouse items file not exists");
-                File.WriteAllText(@"C:\Users\Administrator\source\repos\TheEddy\CashierGitHub\types.json", "Empty file creation");
+                File.WriteAllText(@"C:\Users\Administrator\source\repos\TheEddy\CashierGitHub\items.json", "Empty file creation");
                 return new ObservableCollection<WarehouseItem>();
             }
             return new ObservableCollection<WarehouseItem>();
@@ -86,5 +86,57 @@ namespace Cashier.Model
 
             File.WriteAllText(@"C:\Users\Administrator\source\repos\TheEddy\CashierGitHub\itemIDs.json", JsonConvert.SerializeObject(itemsTypesList, Formatting.Indented));
         }
+
+        public ObservableCollection<HistoryItem> GetHistoryItems()
+        {
+            try
+            {
+                ObservableCollection<HistoryItem> itemsList = JsonConvert.DeserializeObject<ObservableCollection<HistoryItem>>(File.ReadAllText(@"C:\Users\Administrator\source\repos\TheEddy\CashierGitHub\history.json"));
+                if (itemsList != null) return itemsList;
+                else new List<int>() { 1 };
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Warehouse items file not exists");
+                File.WriteAllText(@"C:\Users\Administrator\source\repos\TheEddy\CashierGitHub\history.json", "Empty file creation");
+                return new ObservableCollection<HistoryItem>();
+            }
+            return new ObservableCollection<HistoryItem>();
+
+        }
+
+        public void SaveHistory(ObservableCollection<HistoryItem> itemsList)
+        {
+            string json = JsonConvert.SerializeObject(itemsList, Formatting.Indented);
+            // MessageBox.Show("Collection serialized" + "\n" + json);a
+
+            File.WriteAllText(@"C:\Users\Administrator\source\repos\TheEddy\CashierGitHub\history.json", JsonConvert.SerializeObject(itemsList, Formatting.Indented));
+        }
+
+        public List<int> GetHistoryListID()
+        {
+            try
+            {
+                List<int> types = JsonConvert.DeserializeObject<List<int>>(File.ReadAllText(@"C:\Users\Administrator\source\repos\TheEddy\CashierGitHub\HistoryItemIDs.json"));
+                return types;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Item IDs file not exists");
+                File.WriteAllText(@"C:\Users\Administrator\source\repos\TheEddy\CashierGitHub\HistoryItemIDs.json", @"[0]");
+                return new List<int>(0);
+            }
+            return new List<int>();
+
+        }
+
+        public void SaveHistoryListID(List<int> itemsTypesList)
+        {
+            string json = JsonConvert.SerializeObject(itemsTypesList, Formatting.Indented);
+            //MessageBox.Show("Collection serialized" + "\n" + json);a
+
+            File.WriteAllText(@"C:\Users\Administrator\source\repos\TheEddy\CashierGitHub\HistoryItemIDs.json", JsonConvert.SerializeObject(itemsTypesList, Formatting.Indented));
+        }
+
     }
 }

@@ -197,34 +197,136 @@ namespace Cashier.Model
         }
     }
     
-    class HistoryItem : Item
+    class HistoryItem : INotifyPropertyChanged
     {
-        private ObservableCollection<OperationItem> _operationHistory;
-        public ObservableCollection<OperationItem> operationHistory
+        private DateTime _DateTime;
+        private HistoryIDManager IDManager;
+
+        public HistoryItem()
+        {
+            IDManager = new HistoryIDManager();
+        }
+
+        public DateTime DateTime
         {
             get
             {
-                return _operationHistory;
+                return _DateTime;
             }
             set
             {
-                _operationHistory = value;
-                OnPropertyChanged("operationHistory");
+                _DateTime = value;
             }
         }
 
-        private DateTime _dateTime;
-
-        public DateTime dateTime
+        private ObservableCollection<OperationItem> _OperationHistory;
+        public ObservableCollection<OperationItem> OperationHistory
         {
             get
             {
-                return _dateTime;
+                return _OperationHistory;
             }
             set
             {
-                _dateTime = DateTime.Now;
+                _OperationHistory = value;
             }
+        }
+
+        private string _ItemLine;
+
+        public string ItemLine
+        {
+            get
+            {
+                return _ItemLine;
+            }
+            set
+            {
+                _ItemLine = value;
+            }
+        }
+
+        private int _ItemCode;
+
+        public int ItemCode
+        {
+            get
+            {
+                return _ItemCode;
+            }
+            set
+            {
+                if (value == 0) _ItemCode = IDManager.GetNewItemID();
+                else _ItemCode = value;
+                OnPropertyChanged("ItemCode");
+            }
+        }
+
+        public void UpdateCode()
+        {
+            ItemCode = IDManager.GetNewItemID();
+        }
+
+        private double _TotalSum;
+
+        public double TotalSum
+        {
+            get
+            {
+                return _TotalSum;
+            }
+            set
+            {
+                _TotalSum = value;
+            }
+        }
+
+        public HistoryItem GenerateNewHistoryItem(ObservableCollection<OperationItem> operationItems)
+        {
+            var item = new HistoryItem();
+            item.DateTime = DateTime.Now;
+            item.ItemLine = GenerateNewLineName(operationItems);
+            item.TotalSum = GenerateTotalSum(operationItems);
+            item.OperationHistory = new ObservableCollection<OperationItem>();
+            foreach (OperationItem operationItem in operationItems)
+            {
+                item.OperationHistory.Add(operationItem);
+            }
+            //item.OperationHistory = operationItems;
+
+            return item;
+        }
+        
+        private string GenerateNewLineName(ObservableCollection<OperationItem> opItems)
+        {
+            string lineName = "Items: ";
+            foreach (OperationItem opItem in opItems)
+            {
+                if (opItem.ItemName != null)
+                {
+                    lineName = lineName + opItem.ItemName + "; ";
+                }
+            }
+            return lineName;
+        }
+
+        private double GenerateTotalSum(ObservableCollection<OperationItem> opItems)
+        {
+            double totalSum = 0;
+            foreach (OperationItem opItem in opItems)
+            {
+                if (opItem.ItemTotalPrice != 0)
+                {
+                    totalSum += opItem.ItemTotalPrice;
+                }
+            }
+            return totalSum;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

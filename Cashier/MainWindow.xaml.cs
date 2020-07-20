@@ -15,6 +15,8 @@ namespace Cashier
 
         private Window1 NewTypeWindow;
 
+        private Window2 OperationHistoryWindow;
+
 
         public MainWindow()
         {
@@ -28,6 +30,20 @@ namespace Cashier
         {
             //_viewModel.UpdateTable();
             _viewModel.OperationDone();
+            if (true)
+            {
+                string msg = "Do you wish a second receipt?";
+                MessageBoxResult result =
+                  MessageBox.Show(
+                    msg,
+                    "Data App",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    _viewModel.PrintSecondReceipt();
+                }
+            }
         }
 
         private void dataGrid1_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
@@ -168,6 +184,31 @@ namespace Cashier
             _viewModel.OperationClear();
             _viewModel.CaltulateSum();
             MessageBox.Show("Current list has been cleared!");
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OperationHistoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            OperationHistoryWindow = new Window2();
+            OperationHistoryWindow.SetDataContext(_viewModel);
+            OperationHistoryWindow.Show();
+            OperationHistoryWindow.GetDataContext();
+            //NewTypeWindow.Activate();
+
+        }
+
+        private void PrintLabelButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.PrintNewLabel();
+        }
+
+        private void PrintRecipeButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.PrintSecondReceipt();
         }
     }
 }

@@ -8,6 +8,11 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Printing;
+using System.Drawing.Printing;
+using IronBarCode;
+using System.Drawing;
 
 namespace Cashier.ModelView
 {
@@ -32,13 +37,22 @@ namespace Cashier.ModelView
             set { _operationCollection = value; OnPropertyChanged("operationCollection"); }
         }
 
+        private ObservableCollection<HistoryItem> _historyCollection;
 
-        private ObservableCollection<object> _historyCollection;
-
-        public ObservableCollection<object> historyCollection
+        public ObservableCollection<HistoryItem> historyCollection
         {
             get { return _historyCollection; }
-            set { _historyCollection = value; OnPropertyChanged("historyCollection"); }
+            set {
+                _historyCollection = value;
+                OnPropertyChanged("historyCollection"); SaveHistory();            }
+        }
+
+        private HistoryItem _SelectedHistoryItem;
+
+        public HistoryItem SelectedHistoryItem
+        {
+            get{ return _SelectedHistoryItem; }
+            set { _SelectedHistoryItem = value; }
         }
 
         private ObservableCollection<WarehouseItem> _warehouseCollection;
@@ -56,6 +70,8 @@ namespace Cashier.ModelView
         {
             warehouseCollection = dataManager.GetWarehouseItems();
             operationCollection = new ObservableCollection<OperationItem>();
+            historyCollection = dataManager.GetHistoryItems();
+            //SelectedHistoryItem = historyCollection.SelectedItem
             //typesListVM = dataManager.GetItemTypes();
             //_typesOC = new ObservableCollection<string>(_typesListVM);
             //item = new WarehouseItem()
@@ -76,19 +92,19 @@ namespace Cashier.ModelView
             //listItems.Add(item);
 
 
-            if (warehouseCollection == null) warehouseCollection = itemsList;
+            //if (warehouseCollection == null) warehouseCollection = itemsList;
             //operationCollection = operationCollection.Add(item);
         }
 
 
-        public ObservableCollection<WarehouseItem> itemsList = new ObservableCollection<WarehouseItem>()
-        {
-            //new Hat(){ItemName = "Purple Hat", ItemAmount = 2, ItemPrice = 10.1, Material = "Paper", Size = "8"},
-           // new Hat(){ItemName = "Red Hat", ItemAmount = 1, ItemPrice = 14.25, Material = "Wool", Size = "6"},
-            //new Gloves(){ItemName = "Cow Skin glowes big", ItemAmount = 1, ItemPrice = 25.25, Material = "Cow Skin", Size = "12"},
-            //new Gloves(){ItemName = "Deer Skin glowes small", ItemAmount = 1, ItemPrice = 54.25, Material = "Deer Skin", Size = "8"},
-           // new Item(){ItemName = "Breloque", ItemAmount = 1, ItemPrice = 1}
-        };
+        //public ObservableCollection<WarehouseItem> itemsList = new ObservableCollection<WarehouseItem>()
+        //{
+        //    //new Hat(){ItemName = "Purple Hat", ItemAmount = 2, ItemPrice = 10.1, Material = "Paper", Size = "8"},
+        //   // new Hat(){ItemName = "Red Hat", ItemAmount = 1, ItemPrice = 14.25, Material = "Wool", Size = "6"},
+        //    //new Gloves(){ItemName = "Cow Skin glowes big", ItemAmount = 1, ItemPrice = 25.25, Material = "Cow Skin", Size = "12"},
+        //    //new Gloves(){ItemName = "Deer Skin glowes small", ItemAmount = 1, ItemPrice = 54.25, Material = "Deer Skin", Size = "8"},
+        //   // new Item(){ItemName = "Breloque", ItemAmount = 1, ItemPrice = 1}
+        //};
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -121,8 +137,21 @@ namespace Cashier.ModelView
         {
             int lastID = warehouseCollection.Count();
             int lastCode = warehouseCollection[lastID-1].ItemCode;
-            if (lastCode == 0) warehouseCollection[lastID-1].UpdateCode();
-            OnPropertyChanged("warehouseCollection");
+            if (lastCode == 0)
+            {
+                warehouseCollection[lastID - 1].UpdateCode();
+                string newCode = warehouseCollection[lastID - 1].ItemCode.ToString();
+                printManager.PrintNewLabel(newCode);
+                OnPropertyChanged("warehouseCollection");
+            }
+        }
+
+        public void GrantNewHistoryID()
+        {
+            int lastID = historyCollection.Count();
+            int lastCode = historyCollection[lastID - 1].ItemCode;
+            if (lastCode == 0) historyCollection[lastID - 1].UpdateCode();
+            OnPropertyChanged("historyCollection");
         }
 
         private int _OperationItemCode;
@@ -175,22 +204,26 @@ namespace Cashier.ModelView
                 {
                     operationItem = warehouseItem1.ToOperationItem(warehouseItem1);
                     //bool alreadyInList = false;
-                    if (_operationCollection.FirstOrDefault(x => x.ItemCode == _OperationItemCode) != null)
+                    if (warehouseItem1.ItemAmount != 0)
                     {
-                        OperationItem item = _operationCollection.FirstOrDefault(x => x.ItemCode == _OperationItemCode);
-                        if (item.ItemAmount < warehouseItem1.ItemAmount)
+                        if (_operationCollection.FirstOrDefault(x => x.ItemCode == _OperationItemCode) != null)
                         {
-                            item.ItemAmount++;
-                            item.UpdateTotalPrice();
+                            OperationItem item = _operationCollection.FirstOrDefault(x => x.ItemCode == _OperationItemCode);
+                            if (item.ItemAmount < warehouseItem1.ItemAmount)
+                            {
+                                item.ItemAmount++;
+                                item.UpdateTotalPrice();
+                            }
+                            else MessageBox.Show("No more items in stock!");
                         }
-                        else MessageBox.Show("No more items in stock!");
-                    }
-                    else
-                    {
-                        _operationCollection.Add(operationItem);
-                    }
+                        else
+                        {
+                            _operationCollection.Add(operationItem);
+                        }
 
-                    OnPropertyChanged("operationCollection");
+                        OnPropertyChanged("operationCollection");
+                    }
+                    else MessageBox.Show("Item Code: " + warehouseItem1.ItemCode + "\nItem: " + warehouseItem1.ItemName + " cannot be added! \n Amount on warehouse = " + warehouseItem1.ItemAmount);
                 }
                 catch (NullReferenceException e)
                 {
@@ -208,18 +241,45 @@ namespace Cashier.ModelView
         {
             OperationItem operationItem = new OperationItem();
             WarehouseItem warehouseItem = new WarehouseItem();
-            foreach(OperationItem currentItem in _operationCollection)
+            ObservableCollection<OperationItem> opCollection = new ObservableCollection<OperationItem>();
+            opCollection = operationCollection;
+            try
             {
-                warehouseItem = _warehouseCollection.FirstOrDefault(x => x.ItemCode == currentItem.ItemCode);
-                warehouseItem.ItemAmount -= currentItem.ItemAmount;
+                foreach (OperationItem currentItem in _operationCollection)
+                {
+                
+                    warehouseItem = _warehouseCollection.FirstOrDefault(x => x.ItemCode == currentItem.ItemCode);
+                    warehouseItem.ItemAmount -= currentItem.ItemAmount;
+                }
+                HistoryItem historyItem = new HistoryItem();
+                historyItem = historyItem.GenerateNewHistoryItem(opCollection);
+                historyCollection.Add(historyItem);
+                GrantNewHistoryID();
+                printManager.PrintNewReceipt(historyItem.ItemCode.ToString(), historyItem.DateTime,
+                                                historyItem.OperationHistory, historyItem.TotalSum.ToString());
+                OperationClear();
+                SaveWarehouse();
+                OnPropertyChanged("warehouseCollection");
             }
-            OperationClear();
-            OnPropertyChanged("warehouseCollection");
+            catch (NullReferenceException e)
+            {
+                MessageBox.Show("Some value is empty!\n Item Code cannot be \"0\"!");
+            }
         }
+
+        public void PrintSecondReceipt()
+        {
+            HistoryItem historyItem = new HistoryItem();
+            historyItem = _historyCollection.Last<HistoryItem>();
+            printManager.PrintNewReceipt(historyItem.ItemCode.ToString(), historyItem.DateTime,
+                                                    historyItem.OperationHistory, historyItem.TotalSum.ToString());
+        }
+
         public void OperationClear()
         {
             _operationCollection.Clear();
             OperationItemCode = "";
+            SaveHistory();
             CaltulateSum();
             OnPropertyChanged("operationCollection");
         }
@@ -252,6 +312,50 @@ namespace Cashier.ModelView
             {
                 _operationSum = Double.Parse(value);
                 OnPropertyChanged("operationSum");
+            }
+        }
+
+        public void SaveHistory()
+        {
+            dataManager.SaveHistory(_historyCollection);
+        }
+
+        PrintManager printManager = new PrintManager();
+
+        public void PrintNewLabel()
+        {
+            if (selectedWareHouseItem != null)
+            {
+                string itemCode = selectedWareHouseItem.ItemCode.ToString();
+                printManager.PrintNewLabel(itemCode);
+            }
+            else MessageBox.Show("Choose Item from list first!");
+        }
+
+        
+
+        public void PrintNewReceipt()
+        {
+            if (_SelectedHistoryItem != null)
+            {
+                //var newReceipt = ReceiptTemplate();
+                printManager.PrintNewReceipt(_SelectedHistoryItem.ItemCode.ToString(), _SelectedHistoryItem.DateTime, 
+                            _SelectedHistoryItem.OperationHistory, _SelectedHistoryItem.TotalSum.ToString());
+            }
+        }
+
+
+        private WarehouseItem _selectedWarehouseItem;
+
+        public WarehouseItem selectedWareHouseItem
+        {
+            get
+            {
+                return _selectedWarehouseItem;
+            }
+            set
+            {
+                _selectedWarehouseItem = value;
             }
         }
     }

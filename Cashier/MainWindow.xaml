@@ -35,7 +35,7 @@
 
             <StackPanel x:Name="OperationStackPanel" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Width="150" Background="Gray" VerticalAlignment="Bottom" Grid.RowSpan="2">
                 <TextBlock Text="{Binding operationSum, UpdateSourceTrigger=PropertyChanged}" Foreground="White" HorizontalAlignment="Center" FontSize="20"/>
-                <Button x:Name="PrintRecipeButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" BorderThickness="0" Height="40">
+                <Button x:Name="PrintRecipeButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" BorderThickness="0" Height="40" Click="PrintRecipeButton_Click">
                         <TextBlock Foreground="White" FontSize="20"
                                HorizontalAlignment="Center" VerticalAlignment="Center">Print</TextBlock>
                     </Button>
@@ -46,14 +46,14 @@
             </StackPanel>
 
             <StackPanel x:Name="HistoryStackPanel" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Width="150" Background="Gray" VerticalAlignment="Bottom" Visibility="Hidden"  Grid.RowSpan="2">
-                <Button x:Name="PrintHistoryButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" BorderThickness="0" Height="40">
+                <Button x:Name="PrintHistoryButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" BorderThickness="0" Height="40" Click="PrintRecipeButton_Click">
                     <TextBlock Foreground="White" FontSize="20"
                                HorizontalAlignment="Center" VerticalAlignment="Center">Print</TextBlock>
                 </Button>
             </StackPanel>
 
             <StackPanel x:Name="WarehouseStackPanel" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Width="150" Background="Gray" VerticalAlignment="Bottom" Visibility="Hidden" Grid.RowSpan="2">
-                <Button x:Name="PrintLabelButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" BorderThickness="0" Height="40">
+                <Button x:Name="PrintLabelButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" BorderThickness="0" Height="40" Click="PrintLabelButton_Click">
                     <TextBlock Foreground="White" FontSize="20"
                                HorizontalAlignment="Center" VerticalAlignment="Center">Print</TextBlock>
                 </Button>
@@ -64,7 +64,8 @@
             </StackPanel>
 
             <DataGrid Grid.Column="1" Grid.Row="0" x:Name="operationGrid" 
-                      AutoGenerateColumns="False" ItemsSource="{Binding operationCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RowEditEnding="dataGrid1_RowEditEnding" Visibility="Visible">
+                      AutoGenerateColumns="False" ItemsSource="{Binding operationCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            RowEditEnding="dataGrid1_RowEditEnding" Visibility="Visible" CanUserDeleteRows="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Code" Binding="{Binding ItemCode}" Width="Auto" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*" IsReadOnly="True"/>
@@ -76,18 +77,28 @@
             </DataGrid>
 
             <DataGrid Grid.Column="1" Grid.Row="0"  x:Name="historyGrid" Grid.RowSpan="2"
-                      AutoGenerateColumns="False" ItemsSource="{Binding historyCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RowEditEnding="dataGrid1_RowEditEnding"  Visibility="Hidden" >
+                      AutoGenerateColumns="False" ItemsSource="{Binding historyCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            RowEditEnding="dataGrid1_RowEditEnding"  Visibility="Hidden" SelectedItem="{Binding SelectedHistoryItem}" SelectionMode="Single"  CanUserDeleteRows="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Datetime" Binding="{Binding ItemPrice}" Width="Auto" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Code" Binding="{Binding ItemCode}" Width="Auto" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Quantity" Binding="{Binding ItemAmount}" Width="Auto" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Price" Binding="{Binding ItemPrice}" Width="Auto" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Datetime" Binding="{Binding DateTime}" Width="Auto" IsReadOnly="True"/>
+                    <DataGridTemplateColumn Header="Items" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button x:Name="OperationHistoryButton" BorderThickness="0" Click="OperationHistoryButton_Click" Background="White">
+                                    <TextBlock Text="{Binding ItemLine}"/>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Total" Binding="{Binding TotalSum}" IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
 
             <DataGrid Grid.Column="1" Grid.Row="0" x:Name="warehouseGrid" Grid.RowSpan="2"
-                      AutoGenerateColumns="False" ItemsSource="{Binding warehouseCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RowEditEnding="dataGrid1_RowEditEnding" AddingNewItem="WarehouseGrid_AddingNewItem"  Visibility="Hidden" AlternatingRowBackground="LightGray">
+                      AutoGenerateColumns="False" ItemsSource="{Binding warehouseCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            RowEditEnding="dataGrid1_RowEditEnding" AddingNewItem="WarehouseGrid_AddingNewItem"  Visibility="Hidden" 
+                                AlternatingRowBackground="Beige" SelectedItem="{Binding selectedWareHouseItem}" SelectionMode="Single">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Type">
                         <DataGridTemplateColumn.CellTemplate>
@@ -98,8 +109,8 @@
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <ComboBox ItemsSource="{Binding typesList}" DisplayMemberPath="Type" SelectedValuePath="Type" SelectedItem="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <Button Click="Button_Click">
+                                    <ComboBox ItemsSource="{Binding typesList}" DisplayMemberPath="Type" SelectedValuePath="Type" SelectedItem="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
+                                    <Button Click="Button_Click" BorderThickness="0" Background="White">
                                         <TextBlock Text="Add New"/>
                                     </Button>
                                 </StackPanel>
