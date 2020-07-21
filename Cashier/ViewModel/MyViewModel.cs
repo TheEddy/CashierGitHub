@@ -1,18 +1,9 @@
 ﻿using Cashier.Model;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Printing;
-using System.Drawing.Printing;
-using IronBarCode;
-using System.Drawing;
 
 namespace Cashier.ModelView
 {
