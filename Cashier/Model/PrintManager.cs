@@ -146,7 +146,7 @@ namespace Cashier.Model
                     //graphic.DrawString("test", newfont2, black, startX, startY);
 
                     drawRectangle = new RectangleF(x, offsetY, 50, lineHeight);
-                    graphic.DrawString("Code", newfont2, black, drawRectangle, drawFormat);
+                    graphic.DrawString("Code", newfont2, black, drawRectangle, drawFormatCenter);
 
                     drawRectangle = new RectangleF(x + 50 + 10, offsetY , width, height);
                     graphic.DrawString("Name", newfont2, black, drawRectangle, drawFormatCenter);
@@ -171,13 +171,13 @@ namespace Cashier.Model
 
                     foreach (OperationItem operationItem in operationItems)
                     {
-                        drawRectangle = new RectangleF(x, offsetY, width, height);
-                        graphic.DrawString(operationItem.ItemCode.ToString(), newfont2, black, drawRectangle, drawFormat);
+                        drawRectangle = new RectangleF(x, offsetY, 50, height);
+                        graphic.DrawString(operationItem.ItemCode.ToString(), newfont2, black, drawRectangle, drawFormatCenter);
 
                         drawRectangle = new RectangleF(x+50+10, offsetY, width, height);
                         graphic.DrawString(operationItem.ItemName, newfont2, black, drawRectangle, drawFormatCenter);
 
-                        drawRectangle = new RectangleF(x+ 50 + width + 20, offsetY, 50, height);
+                        drawRectangle = new RectangleF(x + 50 + width + 20, offsetY, width, height);
                         //drawFormat.Alignment = StringAlignment.Far;
                         graphic.DrawString(operationItem.ItemAmount.ToString(), newfont2, black, drawRectangle, drawFormatCenter);
 

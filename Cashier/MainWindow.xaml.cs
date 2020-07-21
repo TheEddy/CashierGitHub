@@ -29,8 +29,8 @@ namespace Cashier
         private void Done_Click(object sender, RoutedEventArgs e)
         {
             //_viewModel.UpdateTable();
-            _viewModel.OperationDone();
-            if (true)
+//            _viewModel.OperationDone();
+            if (_viewModel.OperationDone())
             {
                 string msg = "Do you wish a second receipt?";
                 MessageBoxResult result =

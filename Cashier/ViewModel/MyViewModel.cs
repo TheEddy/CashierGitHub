@@ -156,7 +156,7 @@ namespace Cashier.ModelView
             OnPropertyChanged("historyCollection");
         }
 
-        private int _OperationItemCode;
+        private int? _OperationItemCode;
 
         public string OperationItemCode
         {
@@ -239,34 +239,45 @@ namespace Cashier.ModelView
             else MessageBox.Show("Enter Item ID First!");
         }
 
-        public void OperationDone()
+        public bool OperationDone()
         {
             OperationItem operationItem = new OperationItem();
             WarehouseItem warehouseItem = new WarehouseItem();
             ObservableCollection<OperationItem> opCollection = new ObservableCollection<OperationItem>();
             opCollection = operationCollection;
-            try
+            if (_operationCollection.Count != 0)
             {
-                foreach (OperationItem currentItem in _operationCollection)
+                try
                 {
-                
-                    warehouseItem = _warehouseCollection.FirstOrDefault(x => x.ItemCode == currentItem.ItemCode);
-                    warehouseItem.ItemAmount -= currentItem.ItemAmount;
+                    foreach (OperationItem currentItem in _operationCollection)
+                    {
+
+                        warehouseItem = _warehouseCollection.FirstOrDefault(x => x.ItemCode == currentItem.ItemCode);
+                        warehouseItem.ItemAmount -= currentItem.ItemAmount;
+                    }
+                    HistoryItem historyItem = new HistoryItem();
+                    historyItem = historyItem.GenerateNewHistoryItem(opCollection);
+                    historyCollection.Add(historyItem);
+                    GrantNewHistoryID();
+                    printManager.PrintNewReceipt(historyItem.ItemCode.ToString(), historyItem.DateTime,
+                                                    historyItem.OperationHistory, historyItem.TotalSum.ToString());
+                    OperationClear();
+                    SaveWarehouse();
+                    OnPropertyChanged("warehouseCollection");
+                    return true;
                 }
-                HistoryItem historyItem = new HistoryItem();
-                historyItem = historyItem.GenerateNewHistoryItem(opCollection);
-                historyCollection.Add(historyItem);
-                GrantNewHistoryID();
-                printManager.PrintNewReceipt(historyItem.ItemCode.ToString(), historyItem.DateTime,
-                                                historyItem.OperationHistory, historyItem.TotalSum.ToString());
-                OperationClear();
-                SaveWarehouse();
-                OnPropertyChanged("warehouseCollection");
+                catch (NullReferenceException e)
+                {
+                    MessageBox.Show("Some value is empty!\n Item Code cannot be \"0\"!");
+                    return false;
+                }
             }
-            catch (NullReferenceException e)
+            else
             {
-                MessageBox.Show("Some value is empty!\n Item Code cannot be \"0\"!");
+                MessageBox.Show("List is Empty!");
+                return false;
             }
+            
         }
 
         public void PrintSecondReceipt()

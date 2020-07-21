@@ -145,7 +145,7 @@ namespace Cashier.Model
             }
             catch (Exception e)
             {
-                MessageBox.Show("Warehouse items file not exists");
+                MessageBox.Show("Items History file not exists");
                 var emptyList = new ObservableCollection<HistoryItem>();
                 var emptyItem = new HistoryItem()
                 {
@@ -187,7 +187,7 @@ namespace Cashier.Model
             }
             catch (Exception e)
             {
-                MessageBox.Show("Item IDs file not exists");
+                MessageBox.Show("Item History IDs file not exists");
                 var emptyList = new List<int>();
                 emptyList.Add(0);
                 string plainText = JsonConvert.SerializeObject(emptyList, Formatting.Indented);
