@@ -136,7 +136,9 @@ namespace Cashier.ModelView
         public void GrantNewID()
         {
             int lastID = warehouseCollection.Count();
-            int lastCode = warehouseCollection[lastID-1].ItemCode;
+            int lastCode;
+            if (lastID != 0) lastCode = warehouseCollection[lastID - 1].ItemCode;
+            else lastCode = 1;
             if (lastCode == 0)
             {
                 warehouseCollection[lastID - 1].UpdateCode();

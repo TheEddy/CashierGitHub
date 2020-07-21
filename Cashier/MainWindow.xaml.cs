@@ -210,5 +210,10 @@ namespace Cashier
         {
             _viewModel.PrintSecondReceipt();
         }
+
+        private void PrintHistoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.PrintNewReceipt();
+        }
     }
 }

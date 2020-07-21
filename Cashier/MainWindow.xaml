@@ -46,7 +46,7 @@
             </StackPanel>
 
             <StackPanel x:Name="HistoryStackPanel" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Width="150" Background="Gray" VerticalAlignment="Bottom" Visibility="Hidden"  Grid.RowSpan="2">
-                <Button x:Name="PrintHistoryButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" BorderThickness="0" Height="40" Click="PrintRecipeButton_Click">
+                <Button x:Name="PrintHistoryButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" BorderThickness="0" Height="40" Click="PrintHistoryButton_Click">
                     <TextBlock Foreground="White" FontSize="20"
                                HorizontalAlignment="Center" VerticalAlignment="Center">Print</TextBlock>
                 </Button>

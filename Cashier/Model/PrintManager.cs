@@ -28,6 +28,11 @@ namespace Cashier.Model
             PrintDocument printDocument = new PrintDocument();
             printDocument.DocumentName = "Label №: " + printText;
 
+            PaperSize paperSize = new PaperSize();
+            paperSize.Width = 157;
+            paperSize.Height = 110;
+            
+
             //DialogResult dr = new DialogResult();
             //var result = printDialog.ShowDialog();
             //if (result ?? false)
@@ -35,9 +40,6 @@ namespace Cashier.Model
             try
             {
                 printDocument.PrintPage += PrintLabelPage;
-                PaperSize paperSize = new PaperSize();
-                paperSize.Height = 50;
-                paperSize.Width = 100;
                 printDocument.DefaultPageSettings.PaperSize = paperSize;
                 printDocument.Print();
             }
@@ -83,9 +85,9 @@ namespace Cashier.Model
             int lineHeight = 20;
             int supplementaryLines = 12;
 
-            int bitmapLength = 270;
+            int bitmapLength = 330;
 
-            Bitmap bitm = new Bitmap(bitmapLength, ((supplementaryLines * lineHeight) + (operationItems.Count*50))+ 150);
+            Bitmap bitm = new Bitmap(bitmapLength, ((supplementaryLines * lineHeight) + ((operationItems.Count-1)*50))+ 150);
             StringFormat format = new StringFormat(StringFormatFlags.DirectionRightToLeft);
             using (Graphics graphic = Graphics.FromImage(bitm))
             {
@@ -127,14 +129,14 @@ namespace Cashier.Model
 
                     graphic.FillRectangle(white, 0, 0, bitm.Width, bitm.Height);
 
-                    drawRectangle = new RectangleF(x, offsetY, 270, lineHeight);
+                    drawRectangle = new RectangleF(x, offsetY, bitmapLength, lineHeight);
                     graphic.DrawString("Invoice Number: " + InvoiceNo, newfont2, black, drawRectangle, drawFormatFar);
 
                     //graphic.DrawString("Invoice Number: " + InvoiceNo + "", newfont2, black, startX + 150, startY + offsetY);
                     offsetY = offsetY + lineHeight;
 
                     //PointF pointPrice = new PointF(15f, 45f);
-                    drawRectangle = new RectangleF(x, offsetY, 270, lineHeight);
+                    drawRectangle = new RectangleF(x, offsetY, bitmapLength, lineHeight);
                     graphic.DrawString("Invoice Date: " + InvoiceDate, newfont2, black, drawRectangle, drawFormat);
                     //graphic.DrawString("Invoice Date: " + InvoiceDate + "", newfont2, black, startX, startY + offsetY);
                     offsetY = offsetY + lineHeight;
@@ -143,19 +145,22 @@ namespace Cashier.Model
                     //graphic.DrawString("Name" + "Amount" + "Total", newfont2, black, startX + 15, startY + offsetY);
                     //graphic.DrawString("test", newfont2, black, startX, startY);
 
-                    drawRectangle = new RectangleF(x, offsetY, width, height);
-                    graphic.DrawString("Name", newfont2, black, drawRectangle, drawFormat);
+                    drawRectangle = new RectangleF(x, offsetY, 50, lineHeight);
+                    graphic.DrawString("Code", newfont2, black, drawRectangle, drawFormat);
 
-                    drawRectangle = new RectangleF(x + width + 10, offsetY, width, lineHeight);
+                    drawRectangle = new RectangleF(x + 50 + 10, offsetY , width, height);
+                    graphic.DrawString("Name", newfont2, black, drawRectangle, drawFormatCenter);
+
+                    drawRectangle = new RectangleF(x + 50 + width + 20, offsetY, width, lineHeight);
                     //drawFormat.Alignment = StringAlignment.Far;
-                    graphic.DrawString("Amount", newfont2, black, drawRectangle, drawFormat);
+                    graphic.DrawString("Amount", newfont2, black, drawRectangle, drawFormatCenter);
 
-                    drawRectangle = new RectangleF(x + width * 2 + 20, offsetY, 50, lineHeight);
+                    drawRectangle = new RectangleF(x + 50 + width * 2 + 30, offsetY, 50, lineHeight);
                     graphic.DrawString("Total", newfont2, black, drawRectangle, drawFormatCenter);
 
                     offsetY = offsetY + lineHeight;
                     offsetY = offsetY + lineHeight;
-                    graphic.DrawString("---------------------------------------------------------", newfont2, black, startX, startY + offsetY);
+                    graphic.DrawString("------------------------------------------------------------------------", newfont2, black, startX, startY + offsetY);
                     PointF pointPname = new PointF(10f, 65f);
                     PointF pointBar = new PointF(10f, 65f);
 
@@ -167,48 +172,42 @@ namespace Cashier.Model
                     foreach (OperationItem operationItem in operationItems)
                     {
                         drawRectangle = new RectangleF(x, offsetY, width, height);
-                        graphic.DrawString(operationItem.ItemName, newfont2, black, drawRectangle, drawFormat);
+                        graphic.DrawString(operationItem.ItemCode.ToString(), newfont2, black, drawRectangle, drawFormat);
 
-                        drawRectangle = new RectangleF(x + width + 10, offsetY, 50, height);
+                        drawRectangle = new RectangleF(x+50+10, offsetY, width, height);
+                        graphic.DrawString(operationItem.ItemName, newfont2, black, drawRectangle, drawFormatCenter);
+
+                        drawRectangle = new RectangleF(x+ 50 + width + 20, offsetY, 50, height);
                         //drawFormat.Alignment = StringAlignment.Far;
                         graphic.DrawString(operationItem.ItemAmount.ToString(), newfont2, black, drawRectangle, drawFormatCenter);
 
-                        drawRectangle = new RectangleF(x + width * 2 + 20, offsetY, 50, height);
+                        drawRectangle = new RectangleF(x + 50 + width * 2 + 30, offsetY, 50, height);
                         graphic.DrawString(operationItem.ItemTotalPrice.ToString(), newfont2, black, drawRectangle, drawFormatCenter);
-                        offsetY = offsetY + height;
+                        if (operationItem != operationItems.Last<OperationItem>()) offsetY = offsetY + height;
                     }
-
-
-                    //for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                    //{
-                    //    int ii = 1;
-                    //    ii++;
-
-                    //    graphic.DrawString(" " + dataGridView1.Rows[i].Cells[3].Value + "  " + dataGridView1.Rows[i].Cells[2].Value + "  " + dataGridView1.Rows[i].Cells[1].Value + "", itemFont,
-                    //             black, startX + 15, startY + offsetY);
-                    //    offsetY = offsetY + lineHeight;
-                    //}
                     offsetY = offsetY + lineHeight;
-                    graphic.DrawString("---------------------------------------------------------", newfont2, black, startX, startY + offsetY);
+                    offsetY = offsetY + lineHeight;
+
+                    graphic.DrawString("------------------------------------------------------------------------", newfont2, black, startX, startY + offsetY);
                     offsetY = offsetY + lineHeight;
                     drawRectangle = new RectangleF(x, offsetY, width, height);
                     graphic.DrawString("Total Price: ", newfont2, black, drawRectangle, drawFormat);
 
-                    drawRectangle = new RectangleF(x + width * 2 + 20, offsetY, 50, height);
+                    drawRectangle = new RectangleF(x + 50 + width * 2 + 30, offsetY, 50, height);
                     graphic.DrawString(totalSum.ToString(), newfont2, black, drawRectangle, drawFormatCenter);
-                    //                    graphic.DrawString("Total Price: " + totalSum + "", newfont2, black, startX + 15, startY + offsetY);
-                    //offsetY = offsetY + lineHeight;
-                    //graphic.DrawString("Discount:" + "discount" + "", newfont2, black, startX + 15, startY + offsetY);
-                    //offsetY = offsetY + lineHeight;
-                    //graphic.DrawString("Netto:" + "netto" + "", newfont2, black, startX + 15, startY + offsetY);
+
                     offsetY = offsetY + lineHeight;
+                    graphic.DrawString("------------------------------------------------------------------------", newfont2, black, startX, startY + offsetY);
                     offsetY = offsetY + lineHeight;
-                    graphic.DrawString("---------------------------------------------------------", newfont2, black, startX, startY + offsetY);
-                    offsetY = offsetY + lineHeight;
-                    drawRectangle = new RectangleF(x, offsetY, 270, 150);
-                    graphic.DrawString("Craft House\nDunkri 5, Tallinn, Estonia\n\nJEVGENI LANG FIE\nReg. Kood: 11882291\n\nVILLA STYLE OÜ\nReg. Kood: 12542232", newfont2, black, drawRectangle, drawFormatCenter);
-                    //graphic.DrawString("Craft House test of bottom textbox assignment central blah blah blah", newfont2, black, startX, startY + offsetY);
-                    //offsetY = offsetY + lineHeight;
+                    drawRectangle = new RectangleF(x, offsetY, bitmapLength, 150);
+                    graphic.DrawString("Craft House" +
+                                      "\nDunkri 5, Tallinn, Estonia" +
+                                      "\n" +
+                                      "\nJEVGENI LANG FIE" +
+                                      "\nReg. Kood: 11882291" +
+                                      "\n" +
+                                      "\nVILLA STYLE OÜ" +
+                                      "\nReg. Kood: 12542232", newfont2, black, drawRectangle, drawFormatCenter);
                 }
                 finally
                 {
