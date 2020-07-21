@@ -10,105 +10,36 @@ using System.Windows;
 
 namespace Cashier.ViewModel
 {
-    class NewTypeVM : INotifyPropertyChanged
+    class NewTypeVM : INotifyPropertyChanged        //Used for logic description of "Window1"(Types window)
     {
-        private DataManager dataManager = new DataManager();
+        private DataManagerV2 dataManager = new DataManagerV2();        // Used for data reading/saving to .json files
+                                                                        // As all data will be written/read to/from .json file by each VMs, data will be consistaint.
 
-        private List<Types> _typesListVM;
+        private ObservableCollection<Types> _typesOC;           //Stores data of datagrid
 
-        public List<Types> typesListVM
-        {
-            get { return _typesListVM; }
-            set { _typesListVM = value; OnPropertyChanged("typesList"); dataManager.SaveItemTypes(typesOC); }
-        }
-        public void GetTypes()
-        {
-            typesOC = dataManager.GetItemTypes();
-            OnPropertyChanged("typesOC");
-            //OnPropertyChanged("NewTypeVM.typesOC");
-        }
-        private ObservableCollection<Types> _typesOC;
-
-        //public ObservableCollection<string> typesOC
-        //{
-        //    get
-        //    {
-        //        //_typesOC = new ObservableCollection<string>(_typesListVM);
-        //        return _typesOC;
-        //    }
-        //    set
-        //    {
-        //        _typesOC = value;
-        //    }
-        //}
-
-        public ObservableCollection<Types> typesOC
+        public ObservableCollection<Types> typesOC              //Allows to read/write/delete "Types" from datagrid
         {
             get { return _typesOC; }
-            set { _typesOC = value; OnPropertyChanged("typesOC"); dataManager.SaveItemTypes(typesOC); }
+            set { _typesOC = value; OnPropertyChanged("typesOC"); dataManager.SaveItems(typesOC); }
         }
 
-        private Types _newTypeName;
-        public Types newTypeName
+        public void SaveTypes()                                 //Used for "Save" Button. Method saves all "Types" to .json file
         {
-            get
-            {
-                return _newTypeName;
-            }
-            set
-            {
-                _newTypeName = value;
-            }
-        }
-
-        public void SaveTypes()
-        {
-            dataManager.SaveItemTypes(typesOC);
-        }
-
-        public void AddNewType()
-        {
-            List<Types> vs = _typesListVM;
-            vs.Add(_newTypeName);
-
-            typesListVM = vs;
-            OnPropertyChanged("typesList");
-            //MessageBox.Show("New Type Succesfully added!");
+            dataManager.SaveItems(typesOC);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(String propertyname)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyname));
-                //SaveJSON();
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyname));
         }
-        Types types = new Types();
-        public NewTypeVM()
+
+        public NewTypeVM()                                      // On each initialization get collection of existing "Types" from .json file
         {
-            typesOC = dataManager.GetItemTypes();
+            typesOC = dataManager.GetItems(typesOC);
             
-
-            //types.Type = "Fur Hat";
-            //typesOC.Add(types);
-            //types = new Types();
-            //types.Type = "Paper Hat";
-            //typesOC.Add(types);
-            //types = new Types();
-            //types.Type = "Gloves";
-            //typesOC.Add(types);
-            //types = new Types();
-            //types.Type = "Scarf";
-            //typesOC.Add(types);
-            //types = new Types();
-            //types.Type = "Hoodie";
-            //typesOC.Add(types);
-
             OnPropertyChanged("typesOC");
-            //typesOC = new ObservableCollection<Types>(_typesListVM);
         }
     }
 }

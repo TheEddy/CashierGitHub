@@ -7,45 +7,33 @@ using System.Windows;
 
 namespace Cashier.Model
 {
-    class IDManager
+    abstract class IDManagerBody
+    {
+        abstract public int GetNewItemID();
+
+    }
+
+    class IDManager : IDManagerBody    //Responsible for ID management of Warehouse items and History items.
     {
         protected static int _id;
         protected static int _lastID;
         protected List<int> _listID;
-        protected DataManager dataManager = new DataManager();
-        public IDManager()
+        protected DataManagerV2 dataManager = new DataManagerV2();
+        public IDManager()  // On initialize get last ID.
         {
-            _listID = dataManager.GetListID();
-            _lastID = _listID.Max();
-            //_listID = new List<int>();
+            _listID = dataManager.GetID();     //Receive from List of int from saved file
+            _lastID = _listID.Max();           //Check biggest number in it and set it as last used ID
         }
 
-        public int GetLastItemID()
-        {
-            int tmp = 0;
-            
-            try
-            {
-                tmp = _listID.Max();
-                _lastID = tmp;
-                return tmp;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Error: " + e);
-            }
-            _lastID = tmp;
-            return tmp;
-        }
-        public int GetNewItemID()
+        public override int GetNewItemID()               //Public method, what creates new ID for warehouse Item object and returns it.
         {
             int tmp = 0;
             try
             {
-                tmp = _listID.Max();
-                _listID.Add(++tmp);
-                _lastID = tmp;
-                dataManager.SaveListID(_listID);
+                tmp = _listID.Max();            //Get last used is
+                _listID.Add(++tmp);             //Increment it and add to list of integers
+                _lastID = tmp;                  //Set Last used ID as this newly created one
+                dataManager.SaveID(_listID);    //Save new list of integers to .json file
                 return _lastID;
             }
             catch (Exception e)
@@ -54,42 +42,16 @@ namespace Cashier.Model
             }
             return tmp;
         }
-        public static int GenerateID()
-        {
-            return _lastID += 1;
-        }
     }
-    class HistoryIDManager
+    class HistoryIDManager : IDManager        //Does exaclty the same, but operates with another .json file
     {
-        protected static int _id;
-        protected static int _lastID;
-        protected List<int> _listID;
-        protected DataManager dataManager = new DataManager();
         public HistoryIDManager()
         {
             _listID = dataManager.GetHistoryListID();
             _lastID = _listID.Max();
         }
 
-
-        public int GetLastItemID()
-        {
-            int tmp = 0;
-
-            try
-            {
-                tmp = _listID.Max();
-                _lastID = tmp;
-                return tmp;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Error: " + e);
-            }
-            _lastID = tmp;
-            return tmp;
-        }
-        public int GetNewItemID()
+        public override int GetNewItemID()
         {
             int tmp = 0;
             try
@@ -105,10 +67,6 @@ namespace Cashier.Model
                 MessageBox.Show("Error: " + e);
             }
             return tmp;
-        }
-        public static int GenerateID()
-        {
-            return _lastID += 1;
         }
     }
 }

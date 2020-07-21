@@ -1,42 +1,33 @@
 ﻿using IronBarCode;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace Cashier.Model
 {
-    class PrintManager
+    class PrintManager                                                  //Used for print operations
     {
         private string printText;
 
         public PrintManager()
         {
             printText = "";
-            //PrintDocument print = new PrintDocument();
         }
 
-        public void PrintNewLabel(string printText)
+        public void PrintNewLabel(string printText)                     //Method what prints a label with barcode on warehouse window "Print" click and on newly created warehouse item.
         {
-            this.printText = printText;
-            PrintDialog printDialog = new PrintDialog();
-            PrintDocument printDocument = new PrintDocument();
-            printDocument.DocumentName = "Label №: " + printText;
+            this.printText = printText;                                 //Save Text in variable, will be used in PrintLabelPage
 
-            PaperSize paperSize = new PaperSize();
+            PrintDocument printDocument = new PrintDocument();          //Create Print Document object
+            printDocument.DocumentName = "Label №: " + printText;       //Define name of document
+
+            PaperSize paperSize = new PaperSize();                      //Define label size
             paperSize.Width = 157;
             paperSize.Height = 110;
             
-
-            //DialogResult dr = new DialogResult();
-            //var result = printDialog.ShowDialog();
-            //if (result ?? false)
-            //{
             try
             {
                 printDocument.PrintPage += PrintLabelPage;
@@ -47,47 +38,38 @@ namespace Cashier.Model
             {
                 System.Windows.MessageBox.Show("File is opened! Close file first!");
             }
-                
-            //}
-            //PrintDocument pd = new PrintDocument();
         }
 
-        private void PrintLabelPage(object o, PrintPageEventArgs e)
+        private void PrintLabelPage(object o, PrintPageEventArgs e)                                         //Methot what print an image of barcode in a file. Receives text from printText string.
         {
-            var MyBarCode = IronBarCode.BarcodeWriter.CreateBarcode(printText, BarcodeEncoding.Code128);
-            MyBarCode.ResizeTo(250, 125);
+            var MyBarCode = IronBarCode.BarcodeWriter.CreateBarcode(printText, BarcodeEncoding.Code128);    //Create barcode from text.
+            MyBarCode.ResizeTo(157, 110);                                                                   //Change size of barcode.
 
             //MyBarCode.SaveAsPng(@"C:\Users\Administrator\Documents\barcode.png");
 
             e.PageSettings.PaperSize.Height = MyBarCode.Height;
             e.PageSettings.PaperSize.Width = MyBarCode.Width;
             
-            System.Drawing.Image barcodeImage = MyBarCode.ToImage();
+            System.Drawing.Image barcodeImage = MyBarCode.ToImage();                                        //Parse barcode to image and draw it in a file.
             System.Drawing.Point loc = new System.Drawing.Point(0, 24);
             e.Graphics.DrawImage(barcodeImage, loc);
         }
 
-        //public void PrintReceipt(DateTime operationDate, string OperationCode, ObservableCollection<OperationItem> operationalCollection)
-        //{
-        //    PrintDocument printDocument = new PrintDocument();
-
-        //}
-
+        //Method what print an receipt, building it by line by line;
         public void PrintNewReceipt(string historyNo, DateTime operationDate, ObservableCollection<OperationItem> operationItems, string totalSum)
         {
-            //string welcome = "Test Shop";
             string InvoiceNo = historyNo;
-            string gross = totalSum;
-           // decimal net = Convert.ToInt32(txtNet.Text);
-            //decimal discount = gross - net;
-            string InvoiceDate = operationDate.ToShortDateString() + " " + operationDate.ToShortTimeString();
+            string gross = totalSum;                     
+            // decimal net = Convert.ToInt32(txtNet.Text);       //Reserved. Could be used in a future
+            //decimal discount = gross - net;                   //Reserved. Could be used in a future
+            string InvoiceDate = operationDate.ToShortDateString() + " " + operationDate.ToShortTimeString();       //Date of invoice
 
-            int lineHeight = 20;
-            int supplementaryLines = 12;
+            int lineHeight = 20;                                 //Line height in px
+            int supplementaryLines = 16;                         //Amount of lines. Used for calculation of receipt height
 
-            int bitmapLength = 330;
+            int bitmapLength = 330;                              //Witdh of receipt
 
-            Bitmap bitm = new Bitmap(bitmapLength, ((supplementaryLines * lineHeight) + ((operationItems.Count-1)*50))+ 150);
+            Bitmap bitm = new Bitmap(bitmapLength, ((supplementaryLines * lineHeight) + ((operationItems.Count-1)*50))+ 150);       //Create a bitmap image. Calculating width of receipt.
             StringFormat format = new StringFormat(StringFormatFlags.DirectionRightToLeft);
             using (Graphics graphic = Graphics.FromImage(bitm))
             {
@@ -129,14 +111,14 @@ namespace Cashier.Model
 
                     graphic.FillRectangle(white, 0, 0, bitm.Width, bitm.Height);
 
-                    drawRectangle = new RectangleF(x, offsetY, bitmapLength, lineHeight);
-                    graphic.DrawString("Invoice Number: " + InvoiceNo, newfont2, black, drawRectangle, drawFormatFar);
+                    drawRectangle = new RectangleF(x, offsetY, bitmapLength, lineHeight);                                           //Draw a rectangle what will be filled with text.
+                    graphic.DrawString("Invoice Number: " + InvoiceNo, newfont2, black, drawRectangle, drawFormatFar);              //Fill created rectangle with text. (Write a line of text)
 
                     //graphic.DrawString("Invoice Number: " + InvoiceNo + "", newfont2, black, startX + 150, startY + offsetY);
-                    offsetY = offsetY + lineHeight;
+                    offsetY = offsetY + lineHeight;                                                                                 //Calculating next Y position of rectangle. (Go to next line)
 
                     //PointF pointPrice = new PointF(15f, 45f);
-                    drawRectangle = new RectangleF(x, offsetY, bitmapLength, lineHeight);
+                    drawRectangle = new RectangleF(x, offsetY, bitmapLength, lineHeight);                                           //Repeat.
                     graphic.DrawString("Invoice Date: " + InvoiceDate, newfont2, black, drawRectangle, drawFormat);
                     //graphic.DrawString("Invoice Date: " + InvoiceDate + "", newfont2, black, startX, startY + offsetY);
                     offsetY = offsetY + lineHeight;
@@ -155,15 +137,16 @@ namespace Cashier.Model
                     //drawFormat.Alignment = StringAlignment.Far;
                     graphic.DrawString("Amount", newfont2, black, drawRectangle, drawFormatCenter);
 
-                    drawRectangle = new RectangleF(x + 50 + width * 2 + 30, offsetY, 50, lineHeight);
-                    graphic.DrawString("Total", newfont2, black, drawRectangle, drawFormatCenter);
+                    drawRectangle = new RectangleF(x + 50 + width * 2, offsetY, 80, lineHeight);
+                    graphic.DrawString("Total", newfont2, black, drawRectangle, drawFormatFar);
 
                     offsetY = offsetY + lineHeight;
                     offsetY = offsetY + lineHeight;
-                    graphic.DrawString("------------------------------------------------------------------------", newfont2, black, startX, startY + offsetY);
+                    graphic.DrawString("------------------------------------------------------------------------", newfont2, black, startX, startY + offsetY);  //Draw a section line
                     PointF pointPname = new PointF(10f, 65f);
                     PointF pointBar = new PointF(10f, 65f);
 
+                    offsetY = offsetY + lineHeight;
                     offsetY = offsetY + lineHeight;
                     offsetY = offsetY + lineHeight;
 
@@ -181,26 +164,29 @@ namespace Cashier.Model
                         //drawFormat.Alignment = StringAlignment.Far;
                         graphic.DrawString(operationItem.ItemAmount.ToString(), newfont2, black, drawRectangle, drawFormatCenter);
 
-                        drawRectangle = new RectangleF(x + 50 + width * 2 + 30, offsetY, 50, height);
-                        graphic.DrawString(operationItem.ItemTotalPrice.ToString(), newfont2, black, drawRectangle, drawFormatCenter);
+                        drawRectangle = new RectangleF(x + 50 + width * 2, offsetY, 80, lineHeight);
+                        graphic.DrawString(operationItem.ItemTotalPrice.ToString(), newfont2, black, drawRectangle, drawFormatFar);
                         if (operationItem != operationItems.Last<OperationItem>()) offsetY = offsetY + height;
                     }
                     offsetY = offsetY + lineHeight;
                     offsetY = offsetY + lineHeight;
+                    offsetY = offsetY + lineHeight;
 
                     graphic.DrawString("------------------------------------------------------------------------", newfont2, black, startX, startY + offsetY);
+                    offsetY = offsetY + lineHeight;
                     offsetY = offsetY + lineHeight;
                     drawRectangle = new RectangleF(x, offsetY, width, height);
                     graphic.DrawString("Total Price: ", newfont2, black, drawRectangle, drawFormat);
 
-                    drawRectangle = new RectangleF(x + 50 + width * 2 + 30, offsetY, 50, height);
-                    graphic.DrawString(totalSum.ToString(), newfont2, black, drawRectangle, drawFormatCenter);
+                    drawRectangle = new RectangleF(x + 50 + width * 2, offsetY, 80, lineHeight);
+                    graphic.DrawString(totalSum.ToString() + " €", newfont2, black, drawRectangle, drawFormatFar);
 
+                    offsetY = offsetY + lineHeight;
                     offsetY = offsetY + lineHeight;
                     graphic.DrawString("------------------------------------------------------------------------", newfont2, black, startX, startY + offsetY);
                     offsetY = offsetY + lineHeight;
                     drawRectangle = new RectangleF(x, offsetY, bitmapLength, 150);
-                    graphic.DrawString("Craft House" +
+                    graphic.DrawString("Craft House" +                                                                     //Draw tail of invoice
                                       "\nDunkri 5, Tallinn, Estonia" +
                                       "\n" +
                                       "\nJEVGENI LANG FIE" +
@@ -216,38 +202,19 @@ namespace Cashier.Model
                     itemFont.Dispose();
                     newfont2.Dispose();
                 }
-                this.receipt = bitm;
-                PrintReceipt();
+                this.receipt = bitm;                        // Set created receipt to variable
+                PrintReceipt();                             // Call a method what will print out built receipt
             }
-
-            
-
-            //using (MemoryStream Mmst = new MemoryStream())
-            //{
-            //    bitm.Save("ms", ImageFormat.Jpeg);
-            //    pictureBox1.Image = bitm;
-            //    pictureBox1.Width = bitm.Width;
-            //    pictureBox1.Height = bitm.Height;
-
-
-            //}
-
-
         }
 
         private Bitmap receipt;
 
         public void PrintReceipt()
         {
-            //this.printText = printText;
             PrintDialog printDialog = new PrintDialog();
             PrintDocument printDocument = new PrintDocument();
             printDocument.DocumentName = "Receipt";
 
-            //DialogResult dr = new DialogResult();
-            //var result = printDialog.ShowDialog();
-            //if (result ?? false)
-            //{
             try
             {
                 printDocument.PrintPage += PrintBitmapPage;
@@ -261,12 +228,9 @@ namespace Cashier.Model
             {
                 System.Windows.MessageBox.Show("File is opened! Close file first!");
             }
-
-            //}
-            //PrintDocument pd = new PrintDocument();
         }
 
-        private void PrintBitmapPage(object o, PrintPageEventArgs e)
+        private void PrintBitmapPage(object o, PrintPageEventArgs e)        //Print out bitmap image to printer driver
         {
             System.Drawing.Point loc = new System.Drawing.Point(0, 24);
             e.Graphics.DrawImage(receipt, loc);

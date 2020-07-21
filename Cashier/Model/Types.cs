@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cashier.Model
 {
-    class Types
+    class Types                     // Defines groups of WarehouseItem s
     {
         private string _type;
         public string Type

@@ -11,7 +11,209 @@ using System.Windows;
 
 namespace Cashier.Model
 {
-    class DataManager
+    class DataManagerV2 //With Methods overloading.
+    {
+        private const string psPhrase = "Hi Betsson :)";
+        private string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        public ObservableCollection<WarehouseItem> GetItems(ObservableCollection<WarehouseItem> warehouseItems) //Method, what returns a collection from .json file
+        {
+            try
+            {
+                //Read all from file, decrypt text to plain text, deserialize .json text to object and return it to caller
+                string cipherText = File.ReadAllText(path + @"\Cashier\items.json");
+                string plainText = Encryption.Decrypt(cipherText, psPhrase);
+
+                ObservableCollection<WarehouseItem> itemsList = JsonConvert.DeserializeObject<ObservableCollection<WarehouseItem>>(plainText);
+
+                return itemsList;
+            }
+            catch (Exception e)                                                                     //Possible exception. File not exists, folder not exists.
+            {
+                MessageBox.Show("Warehouse items file not exists");
+
+                var emptyList = new ObservableCollection<WarehouseItem>();                          // If file not exists, make an initial file.
+                var emptyItem = new WarehouseItem()
+                {
+                    ItemAmount = 0,
+                    ItemCode = 0,
+                    ItemName = "Initial, just delete",
+                    ItemPrice = 0,
+                    ItemType = "0"
+                };
+
+                emptyList.Add(emptyItem);                                                           //Add item to collection
+
+                string plainText = JsonConvert.SerializeObject(emptyList, Formatting.Indented);     //Serialize initial file to .json text
+                string cipherText = Encryption.Encrypt(plainText, psPhrase);                        //Encrypt .json text
+
+                File.WriteAllText(path + @"\Cashier\items.json", cipherText);                       //Write encrypted text to file.
+                return emptyList;
+            }
+        }
+
+        public void SaveItems(ObservableCollection<WarehouseItem> itemsList)                        //Method, what saves collection to .json file
+        {
+            string plainText = JsonConvert.SerializeObject(itemsList, Formatting.Indented);         //Serializing object to .json text
+            string cipherText = Encryption.Encrypt(plainText, psPhrase);                            //Encrypting .json text to ciphered text
+
+            File.WriteAllText(path + @"\Cashier\items.json", cipherText);                           //Write encrypted text to file
+        }
+
+
+        public ObservableCollection<Types> GetItems(ObservableCollection<Types> itemsTypesList)     //Overload of method for "Types" object collection
+        {
+            try
+            {
+                string cipherText = File.ReadAllText(path + @"\Cashier\types.json");
+                string plainText = Encryption.Decrypt(cipherText, psPhrase);
+                ObservableCollection<Types> types = JsonConvert.DeserializeObject<ObservableCollection<Types>>(plainText);
+                return types;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Items types file not exists");
+                var emptyList = new ObservableCollection<Types>();
+                var emptyItem = new Types()
+                {
+                    Type = "Initial, delete me"
+                };
+                emptyList.Add(emptyItem);
+                string plainText = JsonConvert.SerializeObject(emptyList, Formatting.Indented);
+                string cipherText = Encryption.Encrypt(plainText, psPhrase);
+                File.WriteAllText(path + @"\Cashier\types.json", cipherText);
+                return emptyList;
+            }
+        }
+
+        public void SaveItems(ObservableCollection<Types> itemsTypesList)                           //Overload of method for "Types" object collection
+        {
+            string plainText = JsonConvert.SerializeObject(itemsTypesList, Formatting.Indented);
+            string cipherText = Encryption.Encrypt(plainText, psPhrase);
+            //string cipherText = plainText;
+            // MessageBox.Show("Collection serialized" + "\n" + json);a
+
+            File.WriteAllText(path + @"\Cashier\types.json", cipherText);
+        }   
+
+
+        public ObservableCollection<HistoryItem> GetItems(ObservableCollection<HistoryItem> Hist)   //Overload of method for "HistoryItem" object collection
+        {
+            try
+            {
+                string cipherText = File.ReadAllText(path + @"\Cashier\history.json");
+                string plainText = Encryption.Decrypt(cipherText, psPhrase);
+
+                ObservableCollection<HistoryItem> itemsList = JsonConvert.DeserializeObject<ObservableCollection<HistoryItem>>(plainText);
+                if (itemsList != null) return itemsList;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Items History file not exists");
+                var emptyList = new ObservableCollection<HistoryItem>();
+                var emptyItem = new HistoryItem()
+                {
+                    DateTime = DateTime.Now,
+                    ItemCode = 0,
+                    ItemLine = "Initial",
+                    OperationHistory = new ObservableCollection<OperationItem>(),
+                    TotalSum = 0
+                };
+                emptyList.Add(emptyItem);
+                string plainText = JsonConvert.SerializeObject(emptyList, Formatting.Indented);
+                string cipherText = Encryption.Encrypt(plainText, psPhrase);
+                File.WriteAllText(path + @"\Cashier\history.json", cipherText);
+                return emptyList;
+            }
+            return new ObservableCollection<HistoryItem>();
+
+        }
+
+        public void SaveItems(ObservableCollection<HistoryItem> itemsList)                           //Overload of method for "HistoryItem" object collection
+        {
+            string plainText = JsonConvert.SerializeObject(itemsList, Formatting.Indented);
+            string cipherText = Encryption.Encrypt(plainText, psPhrase);
+
+            File.WriteAllText(path + @"\Cashier\history.json", cipherText);
+        }
+
+
+
+        public List<int> GetID()                                               //Method, what returns a list of item IDs used for warehouse items from .json file
+        {
+            try
+            {
+                //Read all from file, decrypt text to plain text, deserialize .json text to object and return it to caller
+                string cipherText = File.ReadAllText(path + @"\Cashier\itemIDs.json");
+                string plainText = Encryption.Decrypt(cipherText, psPhrase);
+
+                List<int> types = JsonConvert.DeserializeObject<List<int>>(plainText);
+                return types;
+            }
+            catch (Exception e)                                                                     //Possible exception. File not exists.
+            {
+                MessageBox.Show("Item IDs file not exists");
+
+                var emptyList = new List<int>();                                                    // If file not exists, make an initial file.
+                emptyList.Add(0);                                                                   //Add item to collection
+
+                string plainText = JsonConvert.SerializeObject(emptyList, Formatting.Indented);     //Serialize initial file to .json text
+                string cipherText = Encryption.Encrypt(plainText, psPhrase);                        //Encrypt .json text
+                try
+                {
+                    File.WriteAllText(path + @"\Cashier\itemIDs.json", cipherText);                 //Write encrypted text to file.
+                }
+                catch (DirectoryNotFoundException ex)                                               //Possible exception. Folder not exists (Cause this method is called all first from all)
+                {
+                    System.IO.Directory.CreateDirectory(path + @"\Cashier\");                       //Create a folder
+                    File.WriteAllText(path + @"\Cashier\itemIDs.json", cipherText);                 //Write encrypted text to file.
+                }
+
+                return emptyList;
+            }
+        }
+
+        public void SaveID(List<int> itemsTypesList)                                                //Method, what saves list of item IDs used for warehouse items to .json file
+        {
+            string plainText = JsonConvert.SerializeObject(itemsTypesList, Formatting.Indented);    //Serializing object to .json text
+            string cipherText = Encryption.Encrypt(plainText, psPhrase);                            //Encrypting .json text to ciphered text
+
+            File.WriteAllText(path + @"\Cashier\itemIDs.json", cipherText);                         //Write encrypted text to file
+        }
+
+        public List<int> GetHistoryListID()                                                         //Method, what returns a list of item IDs used for history items from .json file
+        {
+            try
+            {
+                string cipherText = File.ReadAllText(path + @"\Cashier\HistoryItemIDs.json");
+                string plainText = Encryption.Decrypt(cipherText, psPhrase);
+
+                List<int> types = JsonConvert.DeserializeObject<List<int>>(plainText);
+                return types;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Item History IDs file not exists");
+                var emptyList = new List<int>();
+                emptyList.Add(0);
+
+                string plainText = JsonConvert.SerializeObject(emptyList, Formatting.Indented);
+                string cipherText = Encryption.Encrypt(plainText, psPhrase);
+
+                File.WriteAllText(path + @"\Cashier\HistoryItemIDs.json", cipherText);
+                return emptyList;
+            }
+        }
+
+        public void SaveHistoryListID(List<int> itemsTypesList)                                     //Method, what saves list of item IDs used for history items to .json file
+        {
+            string plainText = JsonConvert.SerializeObject(itemsTypesList, Formatting.Indented);
+            string cipherText = Encryption.Encrypt(plainText, psPhrase);
+
+            File.WriteAllText(path + @"\Cashier\HistoryItemIDs.json", cipherText);
+        }
+    }
+
+        class DataManager
     {
         private const string psPhrase = "Hi Betsson :)";
         private string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);

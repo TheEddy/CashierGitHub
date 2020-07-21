@@ -8,7 +8,7 @@
         Title="Operation History" Height="450" Width="800">
     <Grid>
         <DataGrid x:Name="operationGrid" 
-                      AutoGenerateColumns="False" ItemsSource="{Binding Path=SelectedHistoryItem.OperationHistory, Mode=OneWay}" Visibility="Visible">
+                      AutoGenerateColumns="False" ItemsSource="{Binding Path=SelectedHistoryItem.OperationHistory, Mode=OneWay}" Visibility="Visible" CanUserDeleteRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Code" Binding="{Binding ItemCode}" Width="Auto" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*" IsReadOnly="True"/>

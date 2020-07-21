@@ -5,21 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cashier.View"
         mc:Ignorable="d"
-        Title="New Type" Height="300" Width="600"
-        MinHeight="300" MinWidth="600"
-        MaxHeight="300" MaxWidth="600"
-        ResizeMode="NoResize"
+        Title="New Item Type" Height="300" Width="150"
+        MinHeight="300" MinWidth="150"
+        MaxHeight="1200" MaxWidth="150"
+        ResizeMode="CanResize"
         Closing="DataWindow_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <!--<TextBox Grid.Row="0" Text="{Binding typesListVM, UpdateSourceTrigger=PropertyChanged}"/>--> 
-        <!--<DataGrid Grid.Row="0" AutoGenerateColumns="False" ItemsSource="{Binding typesListVM}">
-            <DataGridTextColumn yHeader="Type" Binding="{Binding}"/>
-            --><!--="{Binding typesOC}"--><!--
-        </DataGrid>-->
 
         <DataGrid Grid.Row="0" ItemsSource="{Binding typesOC, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" AutoGenerateColumns="False">
             <DataGrid.Columns>

@@ -37,7 +37,7 @@
                 <TextBlock Text="{Binding operationSum, UpdateSourceTrigger=PropertyChanged}" Foreground="White" HorizontalAlignment="Center" FontSize="20"/>
                 <Button x:Name="PrintRecipeButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" BorderThickness="0" Height="40" Click="PrintRecipeButton_Click">
                         <TextBlock Foreground="White" FontSize="20"
-                               HorizontalAlignment="Center" VerticalAlignment="Center">Print</TextBlock>
+                               HorizontalAlignment="Center" VerticalAlignment="Center">Print Last</TextBlock>
                     </Button>
                 <Button x:Name="ClearAllButton" Background="Gray" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom"  BorderThickness="0" Height="40" Click="ClearAllButton_Click">
                     <TextBlock Foreground="White" FontSize="20"
@@ -78,7 +78,7 @@
 
             <DataGrid Grid.Column="1" Grid.Row="0"  x:Name="historyGrid" Grid.RowSpan="2"
                       AutoGenerateColumns="False" ItemsSource="{Binding historyCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                            RowEditEnding="dataGrid1_RowEditEnding"  Visibility="Hidden" SelectedItem="{Binding SelectedHistoryItem}" SelectionMode="Single"  CanUserDeleteRows="False">
+                            Visibility="Hidden" SelectedItem="{Binding SelectedHistoryItem}" SelectionMode="Single"  CanUserDeleteRows="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Code" Binding="{Binding ItemCode}" Width="Auto" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Datetime" Binding="{Binding DateTime}" Width="Auto" IsReadOnly="True"/>
