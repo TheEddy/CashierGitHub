@@ -78,8 +78,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Materials.cs" />
     <Compile Include="Model\PrintManager.cs" />
     <Compile Include="Model\IDManager.cs" />
+    <Compile Include="Model\Providers.cs" />
+    <Compile Include="Model\Shapes.cs" />
+    <Compile Include="Model\Types.cs" />
     <Compile Include="ViewModel\NewTypeVM.cs" />
     <Compile Include="View\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
@@ -109,7 +113,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Types.cs" />
+    <Compile Include="Model\Owners.cs" />
     <Compile Include="Model\DataManager.cs" />
     <Compile Include="ViewModel\MyViewModel.cs" />
     <Compile Include="Model\Item.cs" />

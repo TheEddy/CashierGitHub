@@ -20,7 +20,8 @@ namespace Cashier.View
 
         private void Button_Click(object sender, RoutedEventArgs e)     // Click on button "Save" Saves existing types list
         {
-            _viewModel.SaveTypes();
+            _viewModel.AddNewType();
+            //_viewModel.SaveOwners();
         }
 
         void DataWindow_Closing(object sender, CancelEventArgs e)       // Describes actions to be performed on window close
@@ -39,8 +40,13 @@ namespace Cashier.View
             }
             else if (result == MessageBoxResult.Yes)
             {
-                _viewModel.SaveTypes();
+                _viewModel.SaveOwners();
             }
+        }
+
+        private void DataGrid_AddingNewItem(object sender, System.Windows.Controls.AddingNewItemEventArgs e)        // Not used
+        {
+            //
         }
     }
 }

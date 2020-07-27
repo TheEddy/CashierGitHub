@@ -20,7 +20,8 @@ namespace Cashier.Model
             {
                 //Read all from file, decrypt text to plain text, deserialize .json text to object and return it to caller
                 string cipherText = File.ReadAllText(path + @"\Cashier\items.json");
-                string plainText = Encryption.Decrypt(cipherText, psPhrase);
+                //string plainText = Encryption.Decrypt(cipherText, psPhrase);
+                string plainText = cipherText;
 
                 ObservableCollection<WarehouseItem> itemsList = JsonConvert.DeserializeObject<ObservableCollection<WarehouseItem>>(plainText);
 
@@ -43,7 +44,8 @@ namespace Cashier.Model
                 emptyList.Add(emptyItem);                                                           //Add item to collection
 
                 string plainText = JsonConvert.SerializeObject(emptyList, Formatting.Indented);     //Serialize initial file to .json text
-                string cipherText = Encryption.Encrypt(plainText, psPhrase);                        //Encrypt .json text
+                //string cipherText = Encryption.Encrypt(plainText, psPhrase);                        //Encrypt .json text
+                string cipherText = plainText;
 
                 File.WriteAllText(path + @"\Cashier\items.json", cipherText);                       //Write encrypted text to file.
                 return emptyList;
@@ -53,42 +55,49 @@ namespace Cashier.Model
         public void SaveItems(ObservableCollection<WarehouseItem> itemsList)                        //Method, what saves collection to .json file
         {
             string plainText = JsonConvert.SerializeObject(itemsList, Formatting.Indented);         //Serializing object to .json text
-            string cipherText = Encryption.Encrypt(plainText, psPhrase);                            //Encrypting .json text to ciphered text
+            //string cipherText = Encryption.Encrypt(plainText, psPhrase);                            //Encrypting .json text to ciphered text
+            string cipherText = plainText;
 
             File.WriteAllText(path + @"\Cashier\items.json", cipherText);                           //Write encrypted text to file
         }
 
 
-        public ObservableCollection<Types> GetItems(ObservableCollection<Types> itemsTypesList)     //Overload of method for "Types" object collection
+        public ObservableCollection<Owners> GetItems(ObservableCollection<Owners> itemsTypesList)     //Overload of method for "Types" object collection
         {
             try
             {
                 string cipherText = File.ReadAllText(path + @"\Cashier\types.json");
-                string plainText = Encryption.Decrypt(cipherText, psPhrase);
-                ObservableCollection<Types> types = JsonConvert.DeserializeObject<ObservableCollection<Types>>(plainText);
+                //string plainText = Encryption.Decrypt(cipherText, psPhrase);
+                string plainText = cipherText;
+                ObservableCollection<Owners> types = JsonConvert.DeserializeObject<ObservableCollection<Owners>>(plainText);
                 return types;
             }
             catch (Exception e)
             {
                 MessageBox.Show("Items types file not exists");
-                var emptyList = new ObservableCollection<Types>();
-                var emptyItem = new Types()
+                var emptyList = new ObservableCollection<Owners>();
+                var emptyItem = new Owners()
                 {
-                    Type = "Initial, delete me"
+                    Owner = "Initial, delete me",
+                    TypesMaterial = new ObservableCollection<Materials>() { new Materials() { Material = "0" } },
+                    Types = new ObservableCollection<Types>() {  new Types() { Type = "0"} },
+                    TypesShape = new ObservableCollection<Shapes>() {  new Shapes() { Shape = "0"} },
+                    TypesProviders = new ObservableCollection<Providers>() { new Providers() { Provider = "0"} }
                 };
                 emptyList.Add(emptyItem);
                 string plainText = JsonConvert.SerializeObject(emptyList, Formatting.Indented);
-                string cipherText = Encryption.Encrypt(plainText, psPhrase);
+                //string cipherText = Encryption.Encrypt(plainText, psPhrase);
+                string cipherText = plainText;
                 File.WriteAllText(path + @"\Cashier\types.json", cipherText);
                 return emptyList;
             }
         }
 
-        public void SaveItems(ObservableCollection<Types> itemsTypesList)                           //Overload of method for "Types" object collection
+        public void SaveItems(ObservableCollection<Owners> itemsTypesList)                           //Overload of method for "Types" object collection
         {
             string plainText = JsonConvert.SerializeObject(itemsTypesList, Formatting.Indented);
-            string cipherText = Encryption.Encrypt(plainText, psPhrase);
-            //string cipherText = plainText;
+            //string cipherText = Encryption.Encrypt(plainText, psPhrase);
+            string cipherText = plainText;
             // MessageBox.Show("Collection serialized" + "\n" + json);a
 
             File.WriteAllText(path + @"\Cashier\types.json", cipherText);
@@ -256,23 +265,27 @@ namespace Cashier.Model
             File.WriteAllText(path + @"\Cashier\items.json", cipherText);
         }
 
-        public ObservableCollection<Types> GetItemTypes()
+        public ObservableCollection<Owners> GetItemTypes()
         {
             try
             {
                 string cipherText = File.ReadAllText(path + @"\Cashier\types.json");
-                string plainText = Encryption.Decrypt(cipherText, psPhrase);
-                //string plainText = cipherText;
-                ObservableCollection<Types> types = JsonConvert.DeserializeObject<ObservableCollection<Types>>(plainText);
+                //string plainText = Encryption.Decrypt(cipherText, psPhrase);
+                string plainText = cipherText;
+                ObservableCollection<Owners> types = JsonConvert.DeserializeObject<ObservableCollection<Owners>>(plainText);
                 return types;
             }
             catch (Exception e)
             {
                 MessageBox.Show("Items types file not exists");
-                var emptyList = new ObservableCollection<Types>();
-                var emptyItem = new Types()
+                var emptyList = new ObservableCollection<Owners>();
+                var emptyItem = new Owners()
                 {
-                    Type = "Initial, delete me"
+                    Owner = "Initial, delete me",
+                    TypesMaterial = new ObservableCollection<Materials>() { new Materials() { Material = "0"} },
+                    Types = new ObservableCollection<Types>() { new Types() { Type = "0" } },
+                    TypesShape = new ObservableCollection<Shapes>() { new Shapes() { Shape = "0" } },
+                    TypesProviders = new ObservableCollection<Providers>() { new Providers() { Provider = "0" } }
                 };
                 emptyList.Add(emptyItem);
                 string plainText = JsonConvert.SerializeObject(emptyList, Formatting.Indented);
@@ -282,7 +295,7 @@ namespace Cashier.Model
             }      
         }
 
-        public void SaveItemTypes(ObservableCollection<Types> itemsTypesList)
+        public void SaveItemTypes(ObservableCollection<Owners> itemsTypesList)
         {
             string plainText = JsonConvert.SerializeObject(itemsTypesList, Formatting.Indented);
             string cipherText = Encryption.Encrypt(plainText, psPhrase);

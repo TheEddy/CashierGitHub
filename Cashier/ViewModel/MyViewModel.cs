@@ -47,8 +47,13 @@ namespace Cashier.ModelView
         private ObservableCollection<WarehouseItem> _warehouseCollection;       //Keeps current "WarehouseItem" in collection
         public ObservableCollection<WarehouseItem> warehouseCollection
         {
-            get { return _warehouseCollection; }
-            set { _warehouseCollection = value; OnPropertyChanged("warehouseCollection"); SaveWarehouse(); }
+            get {
+                return _warehouseCollection;
+            }
+            set {
+                _warehouseCollection = value;
+                OnPropertyChanged("warehouseCollection");
+                SaveWarehouse(); }
         }       //Allows to read/write/delete "WarehouseItem" from datagrid
         private WarehouseItem _selectedWarehouseItem;                           // Keeps current selected value from HistoryCollection
         public WarehouseItem selectedWareHouseItem                              // Allows View to set this propery

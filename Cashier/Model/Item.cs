@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -154,32 +155,59 @@ namespace Cashier.Model
     class WarehouseItem : Item                                                                      //Object, what used in WarehouseCollection for read/write in WarehouseDataGrid
     {   
         private string _ItemType;                                                                   //Unique property for WarehouseItem. Describes group of object.
+        private string _ItemOwner;
+        private string _ItemProvider;
+        private string _ItemMaterial;
+        private string _ItemShape;
 
         DataManagerV2 dataManager = new DataManagerV2();                                            //Used for gathering Types object (group property)
 
-        private ObservableCollection<Types> _typesList;
+        private ObservableCollection<Owners> _OwnerList;
 
-        public ObservableCollection<Types> typesList                                                //Group property
+        public ObservableCollection<Owners> OwnerList                                                //Group property
         {
             get                                                                                     //On get, reads value from .json file and returns all possible types to be used.
             {
-                _typesList = dataManager.GetItems(_typesList);
-                return _typesList;
+                _OwnerList = dataManager.GetItems(_OwnerList);
+                return _OwnerList;
             }
             set                                                                                     //On set, saves new Types list to .json file. On new get, they will be gathered for each WarehouseItem object again
             {
-                dataManager.SaveItems(_typesList);
-                _typesList = value;
+                dataManager.SaveItems(_OwnerList);
+                _OwnerList = value;
 
-                OnPropertyChanged("typesList");
+                OnPropertyChanged("OwnerList");
             }
         }
 
         public WarehouseItem()                                                                      //On initialization, get all possible types from .json 
                                                                                                         //and set "0" value as default for newly created objects
         {
-            _typesList = dataManager.GetItems(_typesList);
-            _ItemType = "0";
+            _OwnerList = dataManager.GetItems(_OwnerList);
+            _OwnerList = new ObservableCollection<Owners>()
+            {
+                new Owners()
+                {
+                   Owner = "0",
+                   TypesShape = new ObservableCollection<Shapes>(){ new Shapes() { Shape ="0"} },
+                   Types = new ObservableCollection<Types>(){new Types() { Type = "0"} },
+                   TypesMaterial = new ObservableCollection<Materials>() { new Materials() { Material = "0"}}
+                }
+            };
+        }
+
+
+        public string ItemOwner
+        {
+            get
+            {
+                return _ItemOwner;
+            }
+            set
+            {
+                _ItemOwner = value;
+                OnPropertyChanged("ItemOwner");
+            }
         }
 
         public string ItemType                                                                      //Selected Types property. Used for keeping existing value in DataGrid Cell
@@ -192,6 +220,45 @@ namespace Cashier.Model
             {
                 _ItemType = value;
                 OnPropertyChanged("ItemType");
+            }
+        }
+
+        public string ItemProvider
+        {
+            get
+            {
+                return _ItemProvider;
+            }
+            set
+            {
+                _ItemProvider = value;
+                OnPropertyChanged("ItemProvider");
+            }
+        }
+
+        public string ItemMaterial
+        {
+            get
+            {
+                return _ItemMaterial;
+            }
+            set
+            {
+                _ItemMaterial = value;
+                OnPropertyChanged("ItemMaterial");
+            }
+        }
+
+        public string ItemShape
+        {
+            get
+            {
+                return _ItemShape;
+            }
+            set
+            {
+                _ItemShape = value;
+                OnPropertyChanged("ItemShape");
             }
         }
 

@@ -1,31 +1,33 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Cashier.Model
 {
-    class Types                     // Defines groups of WarehouseItem s
+    class Types
     {
-        private string _type;
+        private string _Type;
         public string Type
+        {
+            get { return _Type; }
+            set { _Type = value; }
+        }
+
+        private ObservableCollection<Materials> _TypesMaterials;
+
+        public ObservableCollection<Materials> TypesMaterials
         {
             get
             {
-                return _type;
+                return _TypesMaterials;
             }
             set
             {
-                if (value == null) value = "0";
-                else _type = value;
+                _TypesMaterials = value;
             }
-        }
-
-        public override string ToString()
-        {
-            return _type;
-        }
-
-        public Types()
-        {
-            _type = "0";
         }
     }
 }

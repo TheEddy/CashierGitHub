@@ -97,9 +97,44 @@
 
             <DataGrid Grid.Column="1" Grid.Row="0" x:Name="warehouseGrid" Grid.RowSpan="2"
                       AutoGenerateColumns="False" ItemsSource="{Binding warehouseCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                            RowEditEnding="dataGrid1_RowEditEnding" AddingNewItem="WarehouseGrid_AddingNewItem"  Visibility="Hidden" 
+                            RowEditEnding="dataGrid1_RowEditEnding" AddingNewItem="WarehouseGrid_AddingNewItem"  Visibility="Visible" 
                                 AlternatingRowBackground="Beige" SelectedItem="{Binding selectedWareHouseItem}" SelectionMode="Single">
                 <DataGrid.Columns>
+                    <DataGridTextColumn Header="Code" Binding="{Binding ItemCode}" Width="Auto" IsReadOnly="True"/>
+
+                    <DataGridTemplateColumn Header="Owner">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <ComboBox ItemsSource="{Binding Path=OwnerList}" DisplayMemberPath="Owner" SelectedItem="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
+                                    <Button Click="Button_Click" BorderThickness="0" Background="White">
+                                        <TextBlock Text="Add New"/>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Provider">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <ComboBox ItemsSource="{Binding Path=OwnerList}" DisplayMemberPath="TypesProviders.Type" SelectedValuePath="Type" SelectedItem="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+
                     <DataGridTemplateColumn Header="Type">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -109,15 +144,43 @@
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <ComboBox ItemsSource="{Binding typesList}" DisplayMemberPath="Type" SelectedValuePath="Type" SelectedItem="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
-                                    <Button Click="Button_Click" BorderThickness="0" Background="White">
-                                        <TextBlock Text="Add New"/>
-                                    </Button>
+                                    <ComboBox ItemsSource="{Binding Path=OwnerList.Types}" DisplayMemberPath="Type" SelectedValuePath="Type" SelectedItem="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="Code" Binding="{Binding ItemCode}" Width="Auto" IsReadOnly="True"/>
+
+                    <DataGridTemplateColumn Header="Material">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <ComboBox ItemsSource="{Binding Path=OwnerList.TypesMaterial}" DisplayMemberPath="Type" SelectedValuePath="Type" SelectedItem="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Shape">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <ComboBox ItemsSource="{Binding Path=OwnerList.TypesShape}" DisplayMemberPath="Type" SelectedValuePath="Type" SelectedItem="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+
+
                     <DataGridTextColumn Header="Name" Binding="{Binding ItemName}" Width="*"/>
                     <DataGridTextColumn Header="Quantity" Binding="{Binding ItemAmount}" Width="Auto"/>
                     <DataGridTextColumn Header="Price" Binding="{Binding ItemPrice}" Width="Auto"/>
