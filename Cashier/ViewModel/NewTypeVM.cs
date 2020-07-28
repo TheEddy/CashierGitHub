@@ -31,9 +31,24 @@ namespace Cashier.ViewModel
                 _selectedOwner = value;
                 OnPropertyChanged("selectedOwner");
                 OnPropertyChanged("Types");
-                OnPropertyChanged("TypesMaterial");
                 OnPropertyChanged("TypesProvider");
+            }
+        }
+
+
+
+
+        private Types _selectedType;
+
+        public Types selectedType
+        {
+            get { return _selectedType; }
+            set
+            {
+                _selectedType = value;
+                OnPropertyChanged("selectedType");
                 OnPropertyChanged("TypesShape");
+                OnPropertyChanged("TypesMaterial");
             }
         }
 
@@ -52,13 +67,15 @@ namespace Cashier.ViewModel
         public NewTypeVM()                                      // On each initialization get collection of existing "Types" from .json file
         {
             ownersOC = dataManager.GetItems(ownersOC);
-            //selectedOwner = ownersOC[0];
+            selectedOwner = ownersOC[0];
+            selectedType = ownersOC[0].Types[0];
             
             OnPropertyChanged("ownersOC");
             OnPropertyChanged("selectedOwner");
+            OnPropertyChanged("selectedType");
         }
 
-        public void AddNewType()
+        public void AddNewOwner()
         {
             int lastIndex = ownersOC.Count - 1;
             _ownersOC.Add
@@ -66,10 +83,17 @@ namespace Cashier.ViewModel
                 new Owners()
                 {
                     Owner = "0",
-                    Types = new ObservableCollection<Types>() { new Types() { Type = "0" } },
-                    TypesMaterial = new ObservableCollection<Materials>() { new Materials() { Material = "0" } },
+                    Types = new ObservableCollection<Types>()
+                    {
+                        new Types()
+                        {
+                            Type = "0",
+                            TypesMaterials = new ObservableCollection<Materials>() { new Materials() { Material = "0" } },
+                            TypesShape = new ObservableCollection<Shapes>() { new Shapes() { Shape = "0" } }
+                        }
+                    },
                     TypesProviders = new ObservableCollection<Providers>() { new Providers() { Provider = "0" } },
-                    TypesShape = new ObservableCollection<Shapes>() { new Shapes() { Shape = "0" } }
+                    //TypesShape = new ObservableCollection<Shapes>() { new Shapes() { Shape = "0" } }
                 }
                 );
             //_ownersOC[lastIndex].Types = new ObservableCollection<Types>(){new Types() { Type = "0" }};
@@ -77,6 +101,18 @@ namespace Cashier.ViewModel
             //_ownersOC[lastIndex].TypesProviders = new ObservableCollection<Providers>() { new Providers() { Provider = "0" } };
             //_ownersOC[lastIndex].TypesShape = new ObservableCollection<Shapes>() { new Shapes() { Shape = "0" } };
 
+        }
+
+        public void AddNewMaterial()
+        {
+            selectedType.AddNewMaterial();
+            OnPropertyChanged("TypesMaterial");
+        }
+
+        public void AddNewShape()
+        {
+            selectedType.AddNewShape();
+            OnPropertyChanged("TypesShape");
         }
     }
 }

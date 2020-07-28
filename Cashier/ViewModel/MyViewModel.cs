@@ -68,6 +68,17 @@ namespace Cashier.ModelView
             }
         }
 
+        private Types _selectedType;
+
+        public Types selectedType
+        {
+            get { return _selectedType; }
+            set
+            {
+                _selectedType = value;
+                OnPropertyChanged("ItemType");
+            }
+        }
 
         private int? _OperationItemCode;                                        // Keeps value from scanTextBox  on Operation Tab
         public string OperationItemCode                                         // Allows view to modify Text in a scanTextBox
@@ -122,6 +133,7 @@ namespace Cashier.ModelView
                 OnPropertyChanged("OperationDiscount");
             }
         }
+
 
 
 

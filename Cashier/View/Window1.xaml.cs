@@ -20,7 +20,7 @@ namespace Cashier.View
 
         private void Button_Click(object sender, RoutedEventArgs e)     // Click on button "Save" Saves existing types list
         {
-            _viewModel.AddNewType();
+            _viewModel.AddNewOwner();
             //_viewModel.SaveOwners();
         }
 
@@ -47,6 +47,21 @@ namespace Cashier.View
         private void DataGrid_AddingNewItem(object sender, System.Windows.Controls.AddingNewItemEventArgs e)        // Not used
         {
             //
+        }
+
+        private void DataGrid_AddingNewItem_1(object sender, System.Windows.Controls.AddingNewItemEventArgs e)
+        {
+            //_viewModel.AddNewType();
+        }
+
+        private void AddShapeButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.AddNewShape();
+        }
+
+        private void AddMaterialButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.AddNewMaterial();
         }
     }
 }

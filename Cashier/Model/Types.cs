@@ -29,5 +29,41 @@ namespace Cashier.Model
                 _TypesMaterials = value;
             }
         }
+
+        ObservableCollection<Shapes> _TypesShape;
+
+        public ObservableCollection<Shapes> TypesShape
+        {
+            get
+            {
+                return _TypesShape;
+            }
+            set
+            {
+                _TypesShape = value;
+            }
+        }
+
+        public void AddNewMaterial()
+        {
+            var TempCollection = TypesMaterials;
+            if (TempCollection == null)
+            {
+                TempCollection = new ObservableCollection<Materials>() { new Materials() { Material = "0" } };
+            }
+            else TempCollection.Add(new Materials() { Material = "0" });
+            TypesMaterials = TempCollection;
+        }
+
+        public void AddNewShape()
+        {
+            var TempCollection = TypesShape;
+            if (TempCollection == null)
+            {
+                TempCollection = new ObservableCollection<Shapes>() { new Shapes() { Shape = "0" } };
+            }
+            else TempCollection.Add(new Shapes() { Shape = "0" });
+            TypesShape = TempCollection;
+        }
     }
 }
