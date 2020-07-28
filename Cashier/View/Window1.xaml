@@ -36,30 +36,47 @@
                 
             </DataGrid.Columns>
         </DataGrid>-->
-        <DataGrid Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Path=selectedOwner/Types/TypesMaterials, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                        AutoGenerateColumns="True" DisplayMemberPath="Material">
-            <!--<DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=TypesMaterial.Type, UpdateSourceTrigger=PropertyChanged}"  Header="Type" Width="*"/>
-            </DataGrid.Columns>-->
-        </DataGrid>
-        <DataGrid Grid.Column="2" Grid.Row="0" ItemsSource="{Binding Path=selectedOwner.TypesMaterial, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" AutoGenerateColumns="True">
-            <!--<DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Material, UpdateSourceTrigger=PropertyChanged}" Header="Material" Width="*"/>
-            </DataGrid.Columns>-->
-        </DataGrid>
-        <DataGrid Grid.Column="3" Grid.Row="0" ItemsSource="{Binding Path=selectedOwner.TypesProviders, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" AutoGenerateColumns="True">
-            <!--<DataGrid.Columns>
+        <DataGrid Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Path=selectedOwner.TypesProviders, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=Provider, UpdateSourceTrigger=PropertyChanged}" Header="Provider" Width="*"/>
-            </DataGrid.Columns>-->
+            </DataGrid.Columns>
         </DataGrid>
-        <DataGrid Grid.Column="4" Grid.Row="0" ItemsSource="{Binding Path=selectedOwner.TypesShape, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" AutoGenerateColumns="True">
-            <!--<DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=TypesMaterial.Shape, UpdateSourceTrigger=PropertyChanged}" Header="Shape" Width="*"/>
-            </DataGrid.Columns>-->
+        <DataGrid Grid.Column="2" Grid.Row="0" ItemsSource="{Binding Path=selectedOwner.Types, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                        AutoGenerateColumns="False" DisplayMemberPath="Type" SelectedValue="{Binding selectedType}" AddingNewItem="DataGrid_AddingNewItem_1">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Type, UpdateSourceTrigger=PropertyChanged}"  Header="Type" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid Grid.Column="3" Grid.Row="0" ItemsSource="{Binding Path=selectedType.TypesMaterials, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                  AutoGenerateColumns="False" DisplayMemberPath="Material">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Material, UpdateSourceTrigger=PropertyChanged}" Header="Material" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid Grid.Column="4" Grid.Row="0" ItemsSource="{Binding Path=selectedType.TypesShape, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                  AutoGenerateColumns="False" DisplayMemberPath="Shape">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Shape, UpdateSourceTrigger=PropertyChanged}" Header="Shape" Width="*"/>
+            </DataGrid.Columns>
         </DataGrid>
 
-        <Button Grid.Row="1" Background="Gray" Click="Button_Click" VerticalAlignment="Bottom" Height="50" Grid.ColumnSpan="5">
-            <TextBlock Foreground="White" Text="Add Row" FontSize="20"/>
+        <Button Grid.Row="1" Background="Gray" Click="Button_Click" VerticalAlignment="Bottom" Height="50" Grid.ColumnSpan="2">
+            <TextBlock Foreground="White" Text="Add Owner" FontSize="12"/>
         </Button>
+        
+        <Grid Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button Grid.Row="0" Grid.Column="2" x:Name="AddMaterialButton" Background="Gray" Click="AddMaterialButton_Click"  VerticalAlignment="Bottom" Height="25" Grid.ColumnSpan="1">
+                <TextBlock Foreground="White" Text="Add Material" FontSize="10"/>
+            </Button>
+
+            <Button Grid.Row="1" Grid.Column="2" x:Name="AddShapeButton" Background="Gray" Click="AddShapeButton_Click"  VerticalAlignment="Bottom" Height="25" Grid.ColumnSpan="1">
+                <TextBlock Foreground="White" Text="Add Shape" FontSize="10"/>
+            </Button>
+        </Grid>
+        
     </Grid>
 </Window>

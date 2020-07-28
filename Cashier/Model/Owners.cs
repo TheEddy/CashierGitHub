@@ -54,36 +54,7 @@ namespace Cashier.Model
             }
         }
 
-        ObservableCollection<Materials> _TypesMaterial;
 
-        public ObservableCollection<Materials> TypesMaterial
-        {
-            get
-            {
-                //if (_TypesMaterial == null)
-                //{
-                    //ObservableCollection<Materials> list = new ObservableCollection<Materials>();
-
-                    //list.Add(new Materials() { Material = "0" });
-                    //_TypesMaterial = list;
-                    return _TypesMaterial;
-                //}
-                //else
-                    return _TypesMaterial;
-            }
-            set
-            {
-                //ObservableCollection<Materials> list = new ObservableCollection<Materials>();
-
-                //if (value == null)
-                //{
-                    //list.Add(new Materials() { Material = "0"});
-                    //_TypesMaterial = list;
-                //}
-                //else
-                    _TypesMaterial = value;
-            }
-        }
 
         ObservableCollection<Providers> _TypesProviders;
 
@@ -91,58 +62,16 @@ namespace Cashier.Model
         {
             get
             {
-                //if (_TypesProviders == null)
-                //{
-                  //  ObservableCollection<Providers> list = new ObservableCollection<Providers>();
-
-                    //list.Add(new Providers() { Provider = "0" });
-                    //_TypesProviders = list;
                     return _TypesProviders;
-                //}
-                //else return _TypesProviders;
             }
             set
             {
-                //ObservableCollection<Providers> list = new ObservableCollection<Providers>();
-                //if (value == null)
-                //{
-                    //list.Add(new Providers() { Provider = "0"});
-                    //_TypesProviders = list;
-                //}
-                //else 
                     _TypesProviders = value;
             }
         }
 
 
-        ObservableCollection<Shapes> _TypesShape;
 
-        public ObservableCollection<Shapes> TypesShape
-        {
-            get
-            {
-                //if (_TypesShape == null)
-                //{
-                  //  ObservableCollection<Shapes> list = new ObservableCollection<Shapes>();
-
-                    //list.Add(new Shapes() { Shape = "0" });
-                    //_TypesShape = list;
-                    return _TypesShape;
-                //}
-                //else return _TypesShape;
-            }
-            set
-            {
-                //ObservableCollection<Shapes> list = new ObservableCollection<Shapes>();
-                ///if (value == null)
-                //{
-                  //  list.Add(new Shapes() { Shape = "0" }) ;
-                    //_TypesShape = list;
-                //}
-                //else 
-                _TypesShape = value;
-            }
-        }
 
 
         public override string ToString()

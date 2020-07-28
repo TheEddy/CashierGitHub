@@ -38,7 +38,11 @@ namespace Cashier.Model
                     ItemCode = 0,
                     ItemName = "Initial, just delete",
                     ItemPrice = 0,
-                    ItemType = "0"
+                    ItemType = new Types() { Type = "0"},
+                    ItemMaterial = new Materials() { Material = "0"},
+                    ItemShape = new Shapes() { Shape ="0"},
+                    ItemProvider = new Providers() { Provider="0"},
+                    ItemOwner = new Owners() { Owner="0"}
                 };
 
                 emptyList.Add(emptyItem);                                                           //Add item to collection
@@ -79,9 +83,17 @@ namespace Cashier.Model
                 var emptyItem = new Owners()
                 {
                     Owner = "Initial, delete me",
-                    TypesMaterial = new ObservableCollection<Materials>() { new Materials() { Material = "0" } },
-                    Types = new ObservableCollection<Types>() {  new Types() { Type = "0"} },
-                    TypesShape = new ObservableCollection<Shapes>() {  new Shapes() { Shape = "0"} },
+                    //TypesMaterial = new ObservableCollection<Materials>() { new Materials() { Material = "0" } },
+                    Types = new ObservableCollection<Types>()
+                    {
+                        new Types()
+                        {
+                            Type = "0",
+                            TypesMaterials = new ObservableCollection<Materials>() { new Materials() { Material = "0" } },
+                            TypesShape = new ObservableCollection<Shapes>() { new Shapes() { Shape = "0" } }
+                        }
+                    },
+                    //TypesShape = new ObservableCollection<Shapes>() {  new Shapes() { Shape = "0"} },
                     TypesProviders = new ObservableCollection<Providers>() { new Providers() { Provider = "0"} }
                 };
                 emptyList.Add(emptyItem);
@@ -245,7 +257,11 @@ namespace Cashier.Model
                     ItemCode = 0,
                     ItemName = "Initial, just delete",
                     ItemPrice = 0,
-                    ItemType = "0"
+                    ItemType = new Types() { Type = "0" },
+                    ItemMaterial = new Materials() { Material = "0" },
+                    ItemShape = new Shapes() { Shape = "0" },
+                    ItemProvider = new Providers() { Provider = "0" },
+                    ItemOwner = new Owners() { Owner = "0" }
                 };
                 emptyList.Add(emptyItem);
                 string plainText = JsonConvert.SerializeObject(emptyList, Formatting.Indented);
@@ -282,9 +298,17 @@ namespace Cashier.Model
                 var emptyItem = new Owners()
                 {
                     Owner = "Initial, delete me",
-                    TypesMaterial = new ObservableCollection<Materials>() { new Materials() { Material = "0"} },
-                    Types = new ObservableCollection<Types>() { new Types() { Type = "0" } },
-                    TypesShape = new ObservableCollection<Shapes>() { new Shapes() { Shape = "0" } },
+                    //TypesMaterial = new ObservableCollection<Materials>() { new Materials() { Material = "0"} },
+                    Types = new ObservableCollection<Types>()
+                    {
+                        new Types()
+                        {
+                            Type = "0",
+                            TypesMaterials = new ObservableCollection<Materials>() { new Materials() { Material = "0" } },
+                            TypesShape = new ObservableCollection<Shapes>() { new Shapes() { Shape = "0" } }
+                        }
+                    },
+                    //TypesShape = new ObservableCollection<Shapes>() { new Shapes() { Shape = "0" } },
                     TypesProviders = new ObservableCollection<Providers>() { new Providers() { Provider = "0" } }
                 };
                 emptyList.Add(emptyItem);

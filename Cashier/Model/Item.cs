@@ -154,11 +154,11 @@ namespace Cashier.Model
 
     class WarehouseItem : Item                                                                      //Object, what used in WarehouseCollection for read/write in WarehouseDataGrid
     {   
-        private string _ItemType;                                                                   //Unique property for WarehouseItem. Describes group of object.
-        private string _ItemOwner;
-        private string _ItemProvider;
-        private string _ItemMaterial;
-        private string _ItemShape;
+        private Types _ItemType;                                                                   //Unique property for WarehouseItem. Describes group of object.
+        private Owners _ItemOwner;
+        private Providers _ItemProvider;
+        private Materials _ItemMaterial;
+        private Shapes _ItemShape;
 
         DataManagerV2 dataManager = new DataManagerV2();                                            //Used for gathering Types object (group property)
 
@@ -189,15 +189,15 @@ namespace Cashier.Model
                 new Owners()
                 {
                    Owner = "0",
-                   TypesShape = new ObservableCollection<Shapes>(){ new Shapes() { Shape ="0"} },
+                   //TypesShape = new ObservableCollection<Shapes>(){ new Shapes() { Shape ="0"} },
                    Types = new ObservableCollection<Types>(){new Types() { Type = "0"} },
-                   TypesMaterial = new ObservableCollection<Materials>() { new Materials() { Material = "0"}}
+                   //TypesMaterial = new ObservableCollection<Materials>() { new Materials() { Material = "0"}}
                 }
             };
         }
 
 
-        public string ItemOwner
+        public Owners ItemOwner
         {
             get
             {
@@ -210,7 +210,7 @@ namespace Cashier.Model
             }
         }
 
-        public string ItemType                                                                      //Selected Types property. Used for keeping existing value in DataGrid Cell
+        public Types ItemType                                                                      //Selected Types property. Used for keeping existing value in DataGrid Cell
         {
             get
             {
@@ -223,7 +223,7 @@ namespace Cashier.Model
             }
         }
 
-        public string ItemProvider
+        public Providers ItemProvider
         {
             get
             {
@@ -236,7 +236,7 @@ namespace Cashier.Model
             }
         }
 
-        public string ItemMaterial
+        public Materials ItemMaterial
         {
             get
             {
@@ -249,7 +249,7 @@ namespace Cashier.Model
             }
         }
 
-        public string ItemShape
+        public Shapes ItemShape
         {
             get
             {

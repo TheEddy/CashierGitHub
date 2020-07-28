@@ -105,13 +105,13 @@
                     <DataGridTemplateColumn Header="Owner">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Text="{Binding ItemOwner, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <ComboBox ItemsSource="{Binding Path=OwnerList}" DisplayMemberPath="Owner" SelectedItem="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
+                                    <ComboBox ItemsSource="{Binding Path=OwnerList}" DisplayMemberPath="Owner" SelectedItem="{Binding ItemOwner, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
                                     <Button Click="Button_Click" BorderThickness="0" Background="White">
                                         <TextBlock Text="Add New"/>
                                     </Button>
@@ -123,13 +123,13 @@
                     <DataGridTemplateColumn Header="Provider">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Text="{Binding Path=ItemProvider.Provider, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <ComboBox ItemsSource="{Binding Path=OwnerList}" DisplayMemberPath="TypesProviders.Type" SelectedValuePath="Type" SelectedItem="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
+                                    <ComboBox ItemsSource="{Binding Path=OwnerList.TypesProviders}" DisplayMemberPath="Provider" SelectedItem="{Binding ItemProvider, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
@@ -138,13 +138,13 @@
                     <DataGridTemplateColumn Header="Type">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Text="{Binding Path=ItemType.Type, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <ComboBox ItemsSource="{Binding Path=OwnerList.Types}" DisplayMemberPath="Type" SelectedValuePath="Type" SelectedItem="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
+                                    <ComboBox ItemsSource="{Binding Path=OwnerList.Types}" DisplayMemberPath="Type" SelectedItem="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
@@ -153,13 +153,13 @@
                     <DataGridTemplateColumn Header="Material">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Text="{Binding Path=ItemMaterial.Material, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <ComboBox ItemsSource="{Binding Path=OwnerList.TypesMaterial}" DisplayMemberPath="Type" SelectedValuePath="Type" SelectedItem="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
+                                    <ComboBox ItemsSource="{Binding Path=OwnerList.TypesMaterial}" DisplayMemberPath="Type" SelectedValuePath="Type" SelectedItem="{Binding ItemMaterial, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
@@ -168,13 +168,13 @@
                     <DataGridTemplateColumn Header="Shape">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Text="{Binding Path=ItemShape.Shape, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <ComboBox ItemsSource="{Binding Path=OwnerList.TypesShape}" DisplayMemberPath="Type" SelectedValuePath="Type" SelectedItem="{Binding ItemType, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
+                                    <ComboBox ItemsSource="{Binding Path=OwnerList.TypesShape}" DisplayMemberPath="Type" SelectedValuePath="Type" SelectedItem="{Binding ItemShape, UpdateSourceTrigger=PropertyChanged}" Background="White" BorderThickness="0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
