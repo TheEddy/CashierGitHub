@@ -206,7 +206,9 @@ namespace Cashier.Model
             set
             {
                 _ItemOwner = value;
-                OnPropertyChanged("ItemOwner");
+                OnPropertyChanged("Types");
+                OnPropertyChanged("TypesProviders");
+
             }
         }
 
@@ -220,6 +222,8 @@ namespace Cashier.Model
             {
                 _ItemType = value;
                 OnPropertyChanged("ItemType");
+                OnPropertyChanged("Material");
+                OnPropertyChanged("Shape");
             }
         }
 
@@ -233,6 +237,8 @@ namespace Cashier.Model
             {
                 _ItemProvider = value;
                 OnPropertyChanged("ItemProvider");
+                OnPropertyChanged("TypesProviders");
+                OnPropertyChanged("Provider");
             }
         }
 
@@ -246,6 +252,7 @@ namespace Cashier.Model
             {
                 _ItemMaterial = value;
                 OnPropertyChanged("ItemMaterial");
+                OnPropertyChanged("Material");
             }
         }
 
@@ -259,6 +266,7 @@ namespace Cashier.Model
             {
                 _ItemShape = value;
                 OnPropertyChanged("ItemShape");
+                OnPropertyChanged("Shape");
             }
         }
 
