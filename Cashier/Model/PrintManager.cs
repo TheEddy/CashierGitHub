@@ -25,8 +25,9 @@ namespace Cashier.Model
             printDocument.DocumentName = "Label №: " + printText;       //Define name of document
 
             PaperSize paperSize = new PaperSize();                      //Define label size
-            paperSize.Width = 157;
-            paperSize.Height = 110;
+            //paperSize.Width = 157;
+            //paperSize.Height = 110;
+            paperSize.RawKind = 9;
             
             try
             {
@@ -65,9 +66,9 @@ namespace Cashier.Model
             string InvoiceDate = operationDate.ToShortDateString() + " " + operationDate.ToShortTimeString();       //Date of invoice
 
             int lineHeight = 20;                                 //Line height in px
-            int supplementaryLines = 16;                         //Amount of lines. Used for calculation of receipt height
+            int supplementaryLines = 12;                         //Amount of lines. Used for calculation of receipt height
 
-            int bitmapLength = 330;                              //Witdh of receipt
+            int bitmapLength = 285;                              //Witdh of receipt
 
             Bitmap bitm = new Bitmap(bitmapLength, ((supplementaryLines * lineHeight) + ((operationItems.Count-1)*50))+ 150);       //Create a bitmap image. Calculating width of receipt.
             StringFormat format = new StringFormat(StringFormatFlags.DirectionRightToLeft);
@@ -85,19 +86,26 @@ namespace Cashier.Model
                 {
                     //Font newfont = new Font("Arial Black", 8);
                     newfont2 = new Font("Calibri", 11);
-                    itemFont = new Font("Calibri", 11);
+                    itemFont = new Font("Calibri", 9);
+
+                    StringFormat stringFormat = new StringFormat();
+                    stringFormat.LineAlignment = StringAlignment.Center;
+                    stringFormat.Alignment = StringAlignment.Center;
 
                     black = new SolidBrush(Color.Black);
                     white = new SolidBrush(Color.White);
 
                     StringFormat drawFormat = new StringFormat();
                     drawFormat.Alignment = StringAlignment.Near;
+                    drawFormat.LineAlignment = StringAlignment.Center;
 
                     StringFormat drawFormatCenter = new StringFormat();
                     drawFormatCenter.Alignment = StringAlignment.Center;
+                    drawFormatCenter.LineAlignment = StringAlignment.Center;
 
                     StringFormat drawFormatFar = new StringFormat();
                     drawFormatFar.Alignment = StringAlignment.Far;
+                    drawFormatFar.LineAlignment = StringAlignment.Center;
 
                     float x = 0.0F;
                     float y = 150.0F;
@@ -127,45 +135,61 @@ namespace Cashier.Model
                     //graphic.DrawString("Name" + "Amount" + "Total", newfont2, black, startX + 15, startY + offsetY);
                     //graphic.DrawString("test", newfont2, black, startX, startY);
 
-                    drawRectangle = new RectangleF(x, offsetY, 50, lineHeight);
-                    graphic.DrawString("Code", newfont2, black, drawRectangle, drawFormatCenter);
+                    drawRectangle = new RectangleF(x, offsetY, 40, lineHeight);
+                    graphic.DrawString("Code", newfont2, black, drawRectangle, drawFormat);
 
-                    drawRectangle = new RectangleF(x + 50 + 10, offsetY , width, height);
+                    drawRectangle = new RectangleF(x + 25, offsetY , width, lineHeight);
                     graphic.DrawString("Name", newfont2, black, drawRectangle, drawFormatCenter);
 
-                    drawRectangle = new RectangleF(x + 50 + width + 20, offsetY, width, lineHeight);
+                    drawRectangle = new RectangleF(x + 25 + width + 5, offsetY, 40, lineHeight);
                     //drawFormat.Alignment = StringAlignment.Far;
-                    graphic.DrawString("Amount", newfont2, black, drawRectangle, drawFormatCenter);
+                    graphic.DrawString("Price", newfont2, black, drawRectangle, drawFormatCenter);
 
-                    drawRectangle = new RectangleF(x + 50 + width * 2, offsetY, 80, lineHeight);
-                    graphic.DrawString("Total", newfont2, black, drawRectangle, drawFormatFar);
+                    drawRectangle = new RectangleF(x + 25 + width + 45, offsetY, 30, lineHeight);
+                    //drawFormat.Alignment = StringAlignment.Far;
+                    graphic.DrawString("Qty", newfont2, black, drawRectangle, drawFormatCenter);
+
+                    drawRectangle = new RectangleF(x + 25 + width + 75, offsetY, 30, lineHeight);
+                    //drawFormat.Alignment = StringAlignment.Far;
+                    graphic.DrawString("Disc(%)", newfont2, black, drawRectangle, drawFormatCenter);
+
+                    drawRectangle = new RectangleF(x + 25 + width + 80, offsetY, 80, lineHeight);
+                    graphic.DrawString("Total(€)", newfont2, black, drawRectangle, drawFormatFar);
 
                     offsetY = offsetY + lineHeight;
-                    offsetY = offsetY + lineHeight;
+                    //offsetY = offsetY + lineHeight;
                     graphic.DrawString("------------------------------------------------------------------------", newfont2, black, startX, startY + offsetY);  //Draw a section line
                     PointF pointPname = new PointF(10f, 65f);
                     PointF pointBar = new PointF(10f, 65f);
 
                     offsetY = offsetY + lineHeight;
                     offsetY = offsetY + lineHeight;
-                    offsetY = offsetY + lineHeight;
+                    //offsetY = offsetY + lineHeight;
 
                     //InvoiceNo = "Invoice Number:";
 
                     foreach (OperationItem operationItem in operationItems)
                     {
-                        drawRectangle = new RectangleF(x, offsetY, 50, height);
-                        graphic.DrawString(operationItem.ItemCode.ToString(), newfont2, black, drawRectangle, drawFormatCenter);
+                        drawRectangle = new RectangleF(x, offsetY, 35, height);
+                        graphic.DrawString(operationItem.ItemCode.ToString(), itemFont, black, drawRectangle, drawFormat);
 
-                        drawRectangle = new RectangleF(x+50+10, offsetY, width, height);
-                        graphic.DrawString(operationItem.ItemName, newfont2, black, drawRectangle, drawFormatCenter);
+                        drawRectangle = new RectangleF(x + 25, offsetY, width, height);
+                        graphic.DrawString(operationItem.ItemName, itemFont, black, drawRectangle, drawFormatCenter);
 
-                        drawRectangle = new RectangleF(x + 50 + width + 20, offsetY, width, height);
+                        drawRectangle = new RectangleF(x + 25 + width + 5, offsetY, 40, height);
                         //drawFormat.Alignment = StringAlignment.Far;
-                        graphic.DrawString(operationItem.ItemAmount.ToString(), newfont2, black, drawRectangle, drawFormatCenter);
+                        graphic.DrawString(operationItem.ItemPrice.ToString(), itemFont, black, drawRectangle, drawFormatCenter);
 
-                        drawRectangle = new RectangleF(x + 50 + width * 2, offsetY, 80, lineHeight);
-                        graphic.DrawString(operationItem.ItemTotalPrice.ToString(), newfont2, black, drawRectangle, drawFormatFar);
+                        drawRectangle = new RectangleF(x + 25 + width + 45, offsetY, 30, height);
+                        //drawFormat.Alignment = StringAlignment.Far;
+                        graphic.DrawString(operationItem.ItemAmount.ToString(), itemFont, black, drawRectangle, drawFormatCenter);
+
+                        drawRectangle = new RectangleF(x + 25 + width + 75, offsetY, 30, height);
+                        //drawFormat.Alignment = StringAlignment.Far;
+                        graphic.DrawString(operationItem.ItemDiscount.ToString(), itemFont, black, drawRectangle, drawFormatCenter);
+
+                        drawRectangle = new RectangleF(x + 25 + width + 80, offsetY, 80, height);
+                        graphic.DrawString(operationItem.ItemTotalPrice.ToString(), itemFont, black, drawRectangle, drawFormatFar);
                         if (operationItem != operationItems.Last<OperationItem>()) offsetY = offsetY + height;
                     }
                     offsetY = offsetY + lineHeight;
@@ -173,15 +197,15 @@ namespace Cashier.Model
                     offsetY = offsetY + lineHeight;
 
                     graphic.DrawString("------------------------------------------------------------------------", newfont2, black, startX, startY + offsetY);
+                    //offsetY = offsetY + lineHeight;
                     offsetY = offsetY + lineHeight;
-                    offsetY = offsetY + lineHeight;
-                    drawRectangle = new RectangleF(x, offsetY, width, height);
+                    drawRectangle = new RectangleF(x, offsetY, width, lineHeight);
                     graphic.DrawString("Total Price: ", newfont2, black, drawRectangle, drawFormat);
 
-                    drawRectangle = new RectangleF(x + 50 + width * 2, offsetY, 80, lineHeight);
+                    drawRectangle = new RectangleF(x + 25 + width + 80, offsetY, 80, lineHeight);
                     graphic.DrawString(totalSum.ToString() + " €", newfont2, black, drawRectangle, drawFormatFar);
 
-                    offsetY = offsetY + lineHeight;
+                    //offsetY = offsetY + lineHeight;
                     offsetY = offsetY + lineHeight;
                     graphic.DrawString("------------------------------------------------------------------------", newfont2, black, startX, startY + offsetY);
                     offsetY = offsetY + lineHeight;
@@ -219,8 +243,10 @@ namespace Cashier.Model
             {
                 printDocument.PrintPage += PrintBitmapPage;
                 PaperSize paperSize = new PaperSize();
-                paperSize.Height = 50;
-                paperSize.Width = 100;
+                paperSize.Height = 775;
+                paperSize.Width = 275;
+                paperSize.PaperName = "Receipt";
+                //paperSize.RawKind = 9;
                 printDocument.DefaultPageSettings.PaperSize = paperSize;
                 printDocument.Print();
             }
