@@ -274,7 +274,7 @@ namespace Cashier.Model
         {
             OperationItem operationItem = new OperationItem();
             operationItem.ItemCode = warehouseItem.ItemCode;
-            operationItem.ItemName = warehouseItem.ItemName;
+            operationItem.ItemName = warehouseItem.ItemName + " (" + warehouseItem.ItemType.Type + ' ' + warehouseItem.ItemMaterial.Material +' ' + warehouseItem.ItemShape.Shape + " )";
             operationItem.ItemPrice = warehouseItem.ItemPrice;
             operationItem.ItemAmount = 1;
             operationItem.ItemDiscount = 0;                                                         //Add unique value for operation item manually. Total Price Item will be calculated automatically
