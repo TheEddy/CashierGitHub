@@ -12,14 +12,17 @@ namespace Cashier.Model
     {
         private string printText;
 
+        private string Annotation;
+
         public PrintManager()
         {
             printText = "";
         }
 
-        public void PrintNewLabel(string printText)                     //Method what prints a label with barcode on warehouse window "Print" click and on newly created warehouse item.
+        public void PrintNewLabel(string printText, string Annotation)                     //Method what prints a label with barcode on warehouse window "Print" click and on newly created warehouse item.
         {
             this.printText = printText;                                 //Save Text in variable, will be used in PrintLabelPage
+            this.Annotation = Annotation;
 
             PrintDocument printDocument = new PrintDocument();          //Create Print Document object
             printDocument.DocumentName = "Label №: " + printText;       //Define name of document
@@ -44,7 +47,8 @@ namespace Cashier.Model
         private void PrintLabelPage(object o, PrintPageEventArgs e)                                         //Methot what print an image of barcode in a file. Receives text from printText string.
         {
             var MyBarCode = IronBarCode.BarcodeWriter.CreateBarcode(printText, BarcodeEncoding.Code128);    //Create barcode from text.
-            MyBarCode.ResizeTo(157, 110);                                                                   //Change size of barcode.
+            MyBarCode.ResizeTo(500, 250);                                                                   //Change size of barcode.
+            MyBarCode.AddAnnotationTextBelowBarcode(Annotation);
 
             //MyBarCode.SaveAsPng(@"C:\Users\Administrator\Documents\barcode.png");
 

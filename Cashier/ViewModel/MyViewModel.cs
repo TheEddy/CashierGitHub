@@ -18,7 +18,26 @@ namespace Cashier.ModelView
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private bool _AdminMode;
+        public bool AdminMode {
+            get { return _AdminMode; }
+            set { _AdminMode = value; OnPropertyChanged("WarehouseButton"); }
+        }
 
+        private string _Password;
+
+        public string Password { get { if (_Password == null) return ""; else return _Password;
+            } set { _Password = value; TryAuthorize();
+            } }
+
+        public Visibility WarehouseButton
+        {
+            get
+            {
+                if (_AdminMode) { Password = ""; return Visibility.Visible; }
+                else return Visibility.Collapsed;
+            }
+        }
 
         private ObservableCollection<OperationItem> _operationCollection;       //Keeps current "OperationItem" in collection
         public ObservableCollection<OperationItem> operationCollection          //Allows to read/write/delete "OperationItem" from datagrid
@@ -65,6 +84,7 @@ namespace Cashier.ModelView
             set
             {
                 _selectedWarehouseItem = value;
+                OnPropertyChanged("selectedWareHouseItem");
             }
         }
 
@@ -79,6 +99,161 @@ namespace Cashier.ModelView
                 OnPropertyChanged("ItemType");
             }
         }
+
+
+
+
+        private ObservableCollection<Owners> _expanderOwnersCollection;
+
+        public ObservableCollection<Owners> expanderOwnersCollection
+        {
+            get { return _expanderOwnersCollection;
+            }
+            set
+            {
+                _expanderOwnersCollection = value;
+                OnPropertyChanged("expanderOwnersCollection");
+            }
+        }
+
+
+
+        private ObservableCollection<WarehouseItem> _expanderWarehouseCollection;       //Keeps current "WarehouseItem" in collection
+        public ObservableCollection<WarehouseItem> expanderWarehouseCollection
+        {
+            get
+            {
+                return _expanderWarehouseCollection;
+            }
+            set
+            {
+                _expanderWarehouseCollection = value;
+                OnPropertyChanged("expanderWarehouseCollection");
+            }
+        }       //Provides an ability to lookup for objects in datagrid
+
+        private Owners _expanderSelectedOwner;
+
+        public Owners expanderSelectedOwner
+        {
+            get { return _expanderSelectedOwner;
+            }
+            set
+            {
+                _expanderSelectedOwner = value;
+                OnPropertyChanged("expanderSelectedOwner");
+            }
+        }
+
+        private Providers _expanderSelectedProvider;
+
+        public Providers expanderSelectedProvider
+        {
+            get
+            {
+                return _expanderSelectedProvider;
+            }
+            set
+            {
+                _expanderSelectedProvider = value;
+                OnPropertyChanged("expanderSelectedProvider");
+            }
+        }
+
+        private Types _expanderSelectedType;
+
+        public Types expanderSelectedType
+        {
+            get
+            {
+                return _expanderSelectedType;
+            }
+            set
+            {
+                _expanderSelectedType = value;
+                OnPropertyChanged("expanderSelectedType");
+            }
+        }
+
+        private Materials _expanderSelectedMaterial;
+
+        public Materials expanderSelectedMaterial
+        {
+            get
+            {
+                return _expanderSelectedMaterial;
+            }
+            set
+            {
+                _expanderSelectedMaterial = value;
+                OnPropertyChanged("expanderSelectedMaterial");
+            }
+        }
+
+        private Shapes _expanderSelectedShape;
+
+        public Shapes expanderSelectedShape
+        {
+            get
+            {
+                return _expanderSelectedShape;
+            }
+            set
+            {
+                _expanderSelectedShape = value;
+                OnPropertyChanged("expanderSelectedShape");
+            }
+        }
+
+        private int? _expanderSearch;
+
+        public string expanderSearch
+        {
+            get
+            {
+                if (_expanderSearch == 0) return "";                         // to make scanTextBox empty
+                return _expanderSearch.ToString();
+            }
+            set
+            {
+                try
+                {
+                    if (value != "") _expanderSearch = Int32.Parse(value);
+                    else _expanderSearch = 0;                                // if scanTextBox text is empty, then it's = 0
+
+                    OnPropertyChanged("expanderSearch");
+                }
+                catch (FormatException e)                                       // ID can be only numeric char.
+                {
+                    MessageBox.Show("Only Numeric characters!");
+                }
+            }
+        }
+
+        private bool _expanderIncrement;
+
+        public bool expanderIncrement
+        {
+            get { return _expanderIncrement; }
+            set { _expanderIncrement = value; }
+        }
+
+
+        private bool _expanderDecrement;
+        public bool expanderDecrement
+        {
+            get { return _expanderDecrement; }
+            set { _expanderDecrement = value; }
+        }
+
+
+        private bool _expanderFind;
+        public bool expanderFind
+        {
+            get { return _expanderFind; }
+            set { _expanderFind = value; }
+        }
+
 
         private int? _OperationItemCode;                                        // Keeps value from scanTextBox  on Operation Tab
         public string OperationItemCode                                         // Allows view to modify Text in a scanTextBox
@@ -145,6 +320,8 @@ namespace Cashier.ModelView
             warehouseCollection = dataManager.GetItems(warehouseCollection);
             operationCollection = new ObservableCollection<OperationItem>();
             historyCollection = dataManager.GetItems(historyCollection);
+            _expanderOwnersCollection = dataManager.GetItems(_expanderOwnersCollection);
+            expanderFind = true;
         }
 
         
@@ -161,17 +338,19 @@ namespace Cashier.ModelView
         public void GrantNewID()                                                // Method used for refreshing "0" ID value on newly created WarehouseItem in WarehouseCollection
         {
             int lastID = warehouseCollection.Count();
+            WarehouseItem warehouseItem = warehouseCollection[lastID - 1];
             int lastCode;
 
-            if (lastID != 0) lastCode = warehouseCollection[lastID - 1].ItemCode;
+            if (lastID != 0) lastCode = warehouseItem.ItemCode;
             else lastCode = 1;
 
             if (lastCode == 0)
             {
-                warehouseCollection[lastID - 1].UpdateCode();                  // Call an internal method of WarehouseItem to update ID value from "0" to new ID.
-                string newCode = warehouseCollection[lastID - 1].ItemCode.ToString();
+                warehouseItem.UpdateCode();                  // Call an internal method of WarehouseItem to update ID value from "0" to new ID.
+                string newCode = warehouseItem.ItemCode.ToString();
+                string Annotation = warehouseItem.ItemName + " " + warehouseItem.ItemMaterial.Material + " " + warehouseItem.ItemShape.Shape;
 
-                printManager.PrintNewLabel(newCode);                           // Print a label with new WarehouseItem ID.
+                printManager.PrintNewLabel(newCode, Annotation);                           // Print a label with new WarehouseItem ID.
                 OnPropertyChanged("warehouseCollection");
             }
         }
@@ -236,6 +415,43 @@ namespace Cashier.ModelView
                 }
             }
             else MessageBox.Show("Enter Item ID First!");
+            OperationItemCode = "";
+            OnPropertyChanged("OperationItemCode");
+        }
+
+
+        public void RemoveOperationItem()                                       // Method what adds new OperationItem to OperationCollection based on value from scanTextBox
+                                                                                // Called by "Enter" button click while inside of scanTextBox (MainWindow "Done_Click")
+        {
+            OperationItem operationItem = new OperationItem();
+            WarehouseItem warehouseItem1 = new WarehouseItem();
+
+            if (_OperationItemCode != null)
+            {
+                if (_operationCollection.FirstOrDefault(x => x.ItemCode == _OperationItemCode) != null)     // Checks is this item already exists in current OperationCollection (!=null - exists)
+                {
+                    OperationItem item = _operationCollection.FirstOrDefault(x => x.ItemCode == _OperationItemCode);    //If exists, get this OperationItem and increment "Amount"
+                    if (item.ItemAmount > 1)
+                    {
+                        item.ItemAmount--;
+                    }
+                    else
+                    {
+                        _operationCollection.Remove(item);
+                    }
+                    
+                }
+                else                                                                                        // Means, that there no this item in current OperationCollection and can add it.
+                {
+                    MessageBox.Show("This item not in a list");
+                }
+
+                OnPropertyChanged("operationCollection");
+            }
+            else MessageBox.Show("Enter Item ID First!");
+
+            OperationItemCode = "";
+            OnPropertyChanged("OperationItemCode");
         }
 
         public bool OperationDone()                                             // Method what registers current OperationCollection in HistoryCollection
@@ -308,8 +524,9 @@ namespace Cashier.ModelView
             if (selectedWareHouseItem != null)
             {
                 string itemCode = selectedWareHouseItem.ItemCode.ToString();
+                string Annotation = selectedWareHouseItem.ItemName + " " + selectedWareHouseItem.ItemMaterial.Material + " " + selectedWareHouseItem.ItemShape.Shape;
 
-                printManager.PrintNewLabel(itemCode);
+                printManager.PrintNewLabel(itemCode, Annotation);
             }
             else MessageBox.Show("Choose Item from list first!");
         }
@@ -346,6 +563,101 @@ namespace Cashier.ModelView
                 }
             }
             operationSum = sum.ToString();
+        }
+
+
+        public void WarehouseFiler()
+        {
+            if (expanderWarehouseCollection != null) expanderWarehouseCollection.Clear();
+            else expanderWarehouseCollection = new ObservableCollection<WarehouseItem>();
+
+            ObservableCollection<WarehouseItem> tempCollection = new ObservableCollection<WarehouseItem>();
+
+            foreach (WarehouseItem warehouseItem in _warehouseCollection)
+            {
+                expanderWarehouseCollection.Add(warehouseItem);
+                tempCollection.Add(warehouseItem);
+            }
+            foreach(WarehouseItem item in tempCollection)
+            {
+                if (item.ItemOwner != null)
+                {
+                    if (expanderSelectedOwner != null && expanderSelectedOwner.Owner != item.ItemOwner.Owner) _expanderWarehouseCollection.Remove(item);
+                }
+                else _expanderWarehouseCollection.Remove(item);
+
+                if (item.ItemProvider != null)
+                {
+                    if (expanderSelectedProvider != null && expanderSelectedProvider.Provider != item.ItemProvider.Provider) _expanderWarehouseCollection.Remove(item);
+                }
+                else _expanderWarehouseCollection.Remove(item);
+
+                if (item.ItemType != null)
+                {
+                    if (expanderSelectedType != null && expanderSelectedType.Type != item.ItemType.Type) _expanderWarehouseCollection.Remove(item);
+                }
+                else _expanderWarehouseCollection.Remove(item);
+
+                if (item.ItemMaterial != null)
+                {
+                    if (expanderSelectedMaterial != null && expanderSelectedMaterial.Material != item.ItemMaterial.Material) _expanderWarehouseCollection.Remove(item);
+                }
+                else _expanderWarehouseCollection.Remove(item);
+
+                if (item.ItemShape != null)
+                {
+                    if (expanderSelectedShape != null && expanderSelectedShape.Shape != item.ItemShape.Shape) _expanderWarehouseCollection.Remove(item);
+                }
+                else _expanderWarehouseCollection.Remove(item);
+            }
+            OnPropertyChanged("expanderWarehouseCollection");
+        }
+
+
+
+        public void WarehouseIncrementAction()
+        {
+            WarehouseItem warehouseItem1 = new WarehouseItem();
+
+            if (_expanderSearch != null)
+            {
+                if (_warehouseCollection.FirstOrDefault(x => x.ItemCode == _expanderSearch) != null)     // Checks is this item already exists in current OperationCollection (!=null - exists)
+                {
+                    warehouseItem1 = _warehouseCollection.FirstOrDefault(x => x.ItemCode == _expanderSearch);    //If exists, get this OperationItem and increment "Amount"
+                    if (_expanderIncrement)
+                    {
+                        warehouseItem1.ItemAmount++;
+                    }
+                    else if (_expanderDecrement)
+                    {
+                        if (warehouseItem1.ItemAmount >= 1) warehouseItem1.ItemAmount--;
+                        else MessageBox.Show("Zero on stock!");
+
+                    }
+                    else if (_expanderFind)
+                    {
+
+                        selectedWareHouseItem = warehouseItem1;
+                    }
+
+                }
+                else                                                                                        // Means, that there no this item in current OperationCollection and can add it.
+                {
+                    MessageBox.Show("This item not in a list");
+                }
+
+                OnPropertyChanged("warehouseCollection");
+            }
+            else MessageBox.Show("Enter Item ID First!");
+
+            expanderSearch = "";
+            OnPropertyChanged("expanderSearch");
+        }
+
+        public void TryAuthorize()
+        {
+            if (Password == "0000") AdminMode = true;
+            else AdminMode = false;
         }
     }
 }

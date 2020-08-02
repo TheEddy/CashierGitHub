@@ -17,6 +17,8 @@ namespace Cashier
 
         private Window2 OperationHistoryWindow;
 
+        private Window3 LoginWindow;
+
 
         public MainWindow()
         {
@@ -78,40 +80,52 @@ namespace Cashier
             operationGrid.Visibility = Visibility.Visible;
             scanTextBox.Visibility = Visibility.Visible;
             DoneButton.Visibility = Visibility.Visible;
-            historyGrid.Visibility = Visibility.Hidden;
-            warehouseGrid.Visibility = Visibility.Hidden;
-            SaveButton.Visibility = Visibility.Hidden;
+            historyGrid.Visibility = Visibility.Collapsed;
+            warehouseGrid.Visibility = Visibility.Collapsed;
+            SaveButton.Visibility = Visibility.Collapsed;
 
             OperationStackPanel.Visibility = Visibility.Visible;
-            HistoryStackPanel.Visibility = Visibility.Hidden;
-            WarehouseStackPanel.Visibility = Visibility.Hidden;
+            HistoryStackPanel.Visibility = Visibility.Collapsed;
+            WarehouseStackPanel.Visibility = Visibility.Collapsed;
+
+            OperationExpand.Visibility = Visibility.Visible;
+            HistoryExpand.Visibility = Visibility.Collapsed;
+            WarehouseExpand.Visibility = Visibility.Collapsed;
 
         }
         private void HistoryEnable()                                //Enables History Tab
         {
-            operationGrid.Visibility = Visibility.Hidden;
-            scanTextBox.Visibility = Visibility.Hidden;
-            DoneButton.Visibility = Visibility.Hidden;
+            operationGrid.Visibility = Visibility.Collapsed;
+            scanTextBox.Visibility = Visibility.Collapsed;
+            DoneButton.Visibility = Visibility.Collapsed;
             historyGrid.Visibility = Visibility.Visible;
-            warehouseGrid.Visibility = Visibility.Hidden;
-            SaveButton.Visibility = Visibility.Hidden;
+            warehouseGrid.Visibility = Visibility.Collapsed;
+            SaveButton.Visibility = Visibility.Collapsed;
 
-            OperationStackPanel.Visibility = Visibility.Hidden;
+            OperationStackPanel.Visibility = Visibility.Collapsed;
             HistoryStackPanel.Visibility = Visibility.Visible;
-            WarehouseStackPanel.Visibility = Visibility.Hidden;
+            WarehouseStackPanel.Visibility = Visibility.Collapsed;
+
+            OperationExpand.Visibility = Visibility.Collapsed;
+            HistoryExpand.Visibility = Visibility.Visible;
+            WarehouseExpand.Visibility = Visibility.Collapsed;
         }
         private void WarehouseEnable()                              //Enables Warehouse Tab
         {
-            operationGrid.Visibility = Visibility.Hidden;
-            scanTextBox.Visibility = Visibility.Hidden;
-            DoneButton.Visibility = Visibility.Hidden;
-            historyGrid.Visibility = Visibility.Hidden;
+            operationGrid.Visibility = Visibility.Collapsed;
+            scanTextBox.Visibility = Visibility.Collapsed;
+            DoneButton.Visibility = Visibility.Collapsed;
+            historyGrid.Visibility = Visibility.Collapsed;
             warehouseGrid.Visibility = Visibility.Visible;
             SaveButton.Visibility = Visibility.Visible;
 
-            OperationStackPanel.Visibility = Visibility.Hidden;
-            HistoryStackPanel.Visibility = Visibility.Hidden;
+            OperationStackPanel.Visibility = Visibility.Collapsed;
+            HistoryStackPanel.Visibility = Visibility.Collapsed;
             WarehouseStackPanel.Visibility = Visibility.Visible;
+
+            OperationExpand.Visibility = Visibility.Collapsed;
+            HistoryExpand.Visibility = Visibility.Collapsed;
+            WarehouseExpand.Visibility = Visibility.Visible;
         }
 
         private void TextBlock_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)         // Method what responses to click on "Operation" Tab
@@ -191,6 +205,41 @@ namespace Cashier
         private void TextBlock_PreviewMouseDown_3(object sender, System.Windows.Input.MouseButtonEventArgs e)       // Not used
         {
             // not used
+        }
+
+        private void ExpanderScanTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key != System.Windows.Input.Key.Enter) return;
+            e.Handled = true;
+            _viewModel.RemoveOperationItem();
+            _viewModel.CaltulateSum();
+        }
+
+        private void ExpanderWarehouseSearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.WarehouseFiler();
+        }
+
+        private void ExpanderWarehouseTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key != System.Windows.Input.Key.Enter) return;
+            e.Handled = true;
+            _viewModel.WarehouseIncrementAction();
+        }
+
+        private void MainGrid_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key != System.Windows.Input.Key.LeftCtrl) return;
+            e.Handled = true;
+            if (Menu.Visibility == Visibility.Visible) Menu.Visibility = Visibility.Collapsed;
+            else Menu.Visibility = Visibility.Visible;
+        }
+
+        private void AdminButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoginWindow = new Window3();
+            LoginWindow.SetDataContext(_viewModel);
+            LoginWindow.Show();
         }
     }
 }
